@@ -1,22 +1,36 @@
+// auth.service.ts
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import firebase from 'firebase/compat/app';
+import {
+  Auth,
+  user,                // an observable that tracks the current user
+  signInWithPopup,
+  GoogleAuthProvider,
+  signOut,
+  User,
+} from '@angular/fire/auth';
 
+/**
+ * Modern AngularFire Auth Service (no 'compat').
+ * Tracks the currently logged-in user using a BehaviorSubject.
+ */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  currentUser = new BehaviorSubject<firebase.User | null>(null);
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  /** Expose the current user as an observable for components to subscribe to. */
+  currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private afAuth: AngularFireAuth) {
-    this.afAuth.authState.subscribe((user) => this.currentUser.next(user));
+  constructor(private auth: Auth) {
+    // Subscribe to the 'user' observable from AngularFire, which emits the active User or null.
+    user(this.auth).subscribe((usr) => this.currentUserSubject.next(usr));
   }
 
-  async signInWithGoogle() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    await this.afAuth.signInWithPopup(provider);
+  async signInWithGoogle(): Promise<void> {
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(this.auth, provider);
   }
 
-  signOut() {
-    this.afAuth.signOut();
+  async signOut(): Promise<void> {
+    await signOut(this.auth);
   }
 }

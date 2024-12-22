@@ -1,26 +1,14 @@
-<div class="relative flex flex-col min-h-screen bg-BrandYellow">
-  <div class="flex-none  h-[80px] relative">
-    <div class="absolute z-10 top-4 left-4">
-      <button (click)="toggleNav()" class="flex items-center justify-center w-12 h-12 text-2xl font-bold text-white bg-black rounded-full shadow-md">+</button>
+<div class="relative flex flex-col h-screen bg-BrandYellow">
+  <div class="flex-none h-[80px] fixed top-0 inset-x-0 bg-BrandYellow z-20">
+    <div class="absolute top-4 left-4">
+      <button class="flex items-center justify-center w-12 h-12 text-2xl font-bold text-white bg-black rounded-full shadow-md">+</button>
     </div>
-    <div class="absolute z-10 top-4 right-4">
-      <a routerLink="/">
+    <div class="absolute top-4 right-4">
+      <a href="/">
         <span class="text-3xl font-extrabold text-black condensed">GOLFPAD</span>
       </a>
     </div>
   </div>
 
   <router-outlet></router-outlet>
-
-  <!--
-  <div [ngClass]="{'bg-yellow-500 flex justify-center items-center': isHomepage, 'bg-white flex-1 flex'}">
-  </div>
-
-  <div *ngIf="!isHomepage" class="bg-yellow-500 flex-none relative h-\[50px\] mt-auto">
-      <div class="absolute bottom-4 left-4">
-          <a href="/whitepaper" class="text-sm font-medium text-black">WHITEPAPER |</a> 
-          <a target="_blank" href="https://github.com/jamesbeadle/golfpad" class="text-sm font-medium text-black">GITHUB</a>
-      </div>
-  </div>
-  -->
 </div>

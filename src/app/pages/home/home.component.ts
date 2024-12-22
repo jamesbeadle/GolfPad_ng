@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -7,7 +9,19 @@ import { Component, OnInit } from '@angular/core';
   standalone: true,
 })
 export class HomeComponent implements OnInit {
-  user: any;
+
+  constructor(private authService: AuthService) {
+    // Observe user auth state
+  }
+
+  async googleSignIn() {
+    try {
+      await this.authService.signInWithGoogle();
+    } catch (error) {
+      console.error('Google Sign-In error: ', error);
+    }
+  }
+
 
   ngOnInit() {
  
