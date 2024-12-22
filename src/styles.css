@@ -1,1 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
+/* src/app/components/nav-overlay/nav-overlay.component.css */
+.nav-overlay {
+    @apply flex min-h-screen flex-col relative bg-gray-800 text-white;
+  }
+  
+  .nav-item {
+    @apply p-4;
+  }
+  
+  .nav-item button {
+    @apply text-3xl lg:text-6xl font-bold;
+  }
+  
+  .social-links a {
+    @apply text-xs lg:text-base text-white underline p-2;
+  }
+  
+  img {
+    @apply w-12 h-12 rounded-full;
+  }
+  

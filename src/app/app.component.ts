@@ -1,12 +1,30 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [CommonModule, RouterOutlet, RouterLink],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'GolfPad';
+  expanded = false;
+  selectedRoute = 'home';
+  isHomepage = false;
+
+  ngOnInit(): void {
+    //this.isHomepage = window.location.pathname === '/';
+  }
+
+  toggleNav() {
+    this.expanded = !this.expanded;
+  }
+
+  http = inject(HttpClient);
+
+  logout(): void {
+    console.log('logout');
+  }
 }
