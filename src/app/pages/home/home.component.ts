@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -10,15 +9,7 @@ import { AuthService } from '../../services/auth.service';
 export class HomeComponent implements OnInit {
   user: any;
 
-  constructor(private authService: AuthService) {}
-
   ngOnInit() {
-    this.authService.currentUser.subscribe((user) => {
-      this.user = user;
-    });
-  }
-
-  handleSignInWithGoogle() {
-    this.authService.signInWithGoogle();
+ 
   }
 }

@@ -1,12 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterOutlet } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink],
+  imports: [CommonModule, RouterOutlet],
   templateUrl: './app.component.html',
 })
 export class AppComponent {
@@ -22,7 +21,6 @@ export class AppComponent {
     this.expanded = !this.expanded;
   }
 
-  http = inject(HttpClient);
 
   logout(): void {
     console.log('logout');

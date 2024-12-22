@@ -1,6 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./src/**/*.{html,js,svelte,ts}"],
+  content: [
+    './src/**/*.{html,ts}',
+  ],
   theme: {
     screens: {
       xs: "480px",
@@ -49,7 +51,8 @@ export default {
         BrandDivider: "#DDDDDD",
       },
       fontFamily: {
-        inter: ["Inter", "sans-serif"],
+        monaSans: ['MonaSansCondensed-Regular', 'sans-serif'],
+        condensed: ['MonaSansCondensed-Regular', 'sans-serif']
       },
       fontSize: {
         body: ["16px", "22.4px"],
