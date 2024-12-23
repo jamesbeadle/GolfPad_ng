@@ -2,7 +2,7 @@ export const firebase = {
   production: false,
   firebaseConfig: {
     apiKey: "AIzaSyD8bWCkei6dFyaLP4A1Xj8vQwZHJY7L56s",
-    authDomain: "auth.golfpad.xyz",
+    authDomain: "golfpad3.firebaseapp.com",
     projectId: "golfpad3",
     storageBucket: "golfpad3.firebasestorage.app",
     messagingSenderId: "557801839701",
