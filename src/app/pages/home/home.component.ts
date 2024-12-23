@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 export class HomeComponent implements OnInit {
 
   constructor(private authService: AuthService) {
-    // Observe user auth state
+    // Observe user auth state  
   }
 
   async googleSignIn() {
