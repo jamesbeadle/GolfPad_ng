@@ -1,11 +1,232 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
+  <base href="/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
   <title>GOLFPAD</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <meta
+    name="description"
+    content="GolfPad is a decentralised golf-based game on the Internet Computer blockchain."
+  />
+
+  <meta property="og:title" content="GOLFPAD" />
+  <meta
+    property="og:description"
+    content="GolfPad is a decentralised golf-based game on the Internet Computer blockchain."
+  />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://your-domain.xyz" />
+  <meta property="og:image" content="https://your-domain.xyz/meta-share.jpg" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="GOLFPAD" />
+  <meta
+    name="twitter:description"
+    content="GolfPad is a decentralised golf-based game on the Internet Computer blockchain."
+  />
+  <meta name="twitter:image" content="https://your-domain.xyz/meta-share.jpg" />
+  <meta name="twitter:creator" content="@your_twitter_handle" />
+
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicons/favicon-16x16.png" />
+  <link rel="shortcut icon" href="favicon.ico" />
+
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="#2CE3A6" />
+  <meta name="apple-mobile-web-app-title" content="GOLFPAD" />
+  <link
+    rel="apple-touch-icon"
+    href="assets/images/favicons/apple-touch-icon.png"
+  />
+  <link
+    rel="mask-icon"
+    href="assets/images/favicons/safari-pinned-tab.svg"
+    color="#2CE3A6"
+  />
+
+  <meta name="msapplication-TileColor" content="#2CE3A6" />
+  <meta
+    name="msapplication-config"
+    content="assets/images/favicons/browserconfig.xml"
+  />
+  <meta name="theme-color" content="#2CE3A6" />
+
+
+  <link
+    rel="preload"
+    href="assets/fonts/MonaSans-Regular.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin
+  />
+  <link
+    rel="preload"
+    href="assets/fonts/MonaSans-SemiBold.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin
+  />
+  <link
+    rel="preload"
+    href="assets/fonts/MonaSansCondensed-ExtraBold.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin
+  />
+  <link
+    rel="preload"
+    href="assets/fonts/MonaSansCondensed-Regular.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/favicons/apple-touch-icon.png"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/favicons/apple-touch-icon.png"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/favicons/favicon-16x16.png"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/favicons/favicon-32x32.png"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/favicons/icon-192x192.png"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/favicons/icon-512x512.png"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/favicons/mstile-150x150.png"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/game-images/bands.png"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/game-images/build-it.png"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/game-images/games.png"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/game-images/mulligans.png"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/game-images/next-up.png"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/whitepaper/bands1.jpg"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/whitepaper/bands2.jpg"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/whitepaper/bands3.jpg"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/whitepaper/boat.png"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/whitepaper/build-it1.jpg"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/whitepaper/build-it2.jpg"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/whitepaper/handicap.png"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/whitepaper/mulligans1.jpg"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/whitepaper/mulligans2.jpg"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/whitepaper/next-up1.jpg"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/whitepaper/next-up2.jpg"
+    as="image"
+  />
+
+  <link
+    rel="preload"
+    href="assets/images/whitepaper/roadmap.png"
+    as="image"
+  />
+
 </head>
 <body>
   <app-root></app-root>
