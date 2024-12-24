@@ -35,6 +35,10 @@ export class NavOverlayComponent implements OnInit {
     this.router.navigate([`/${route}`]);
   }
 
+  openNav(): void {
+    this.toggleNav.emit();
+  }
+
   closeNav(): void {
     this.toggleNav.emit();
   }

@@ -13,7 +13,6 @@ export class SimpleModalComponent {
   @Output() onClose = new EventEmitter<void>();
 
   closeModal(): void {
-    console.log("close")
     this.onClose.emit();
   }
 }

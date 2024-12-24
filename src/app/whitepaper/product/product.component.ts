@@ -20,8 +20,6 @@ export class ProductComponent {
 
   openMulligans() { this.showMulligans = true; }
   closeMulligans() { 
-    
-    console.log('Closing Mulligans modal');
     this.showMulligans = false; 
   }
 

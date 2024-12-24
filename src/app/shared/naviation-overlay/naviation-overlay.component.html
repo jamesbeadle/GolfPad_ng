@@ -1,0 +1,59 @@
+<div
+  *ngIf="expanded"
+  class="fixed inset-0 bg-BrandYellow flex flex-col items-center justify-center transition-opacity duration-300 ease-in-out"
+  style="z-index: 9999"
+>
+  <button
+    class="absolute top-4 left-4 w-12 h-12 bg-black flex items-center justify-center rounded-full shadow-md"
+    (click)="handleCloseNav()"
+  >
+    -
+  </button>
+
+  <nav class="flex flex-col w-full text-blue px-4">
+    <a
+      routerLink="/"
+      routerLinkActive="text-black"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="text-4xl condensed"
+    >
+      HOME
+    </a>
+
+    <a
+      routerLink="/whitepaper"
+      routerLinkActive="text-black"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="text-4xl condensed"
+    >
+      WHITEPAPER
+    </a>
+
+    <a
+      routerLink="/games"
+      routerLinkActive="text-black"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="text-4xl condensed"
+    >
+      GAMES
+    </a>
+
+    <a
+      routerLink="/courses"
+      routerLinkActive="text-black"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="text-4xl condensed"
+    >
+      COURSES
+    </a>
+
+    <a
+      routerLink="/yardages"
+      routerLinkActive="text-black"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="text-4xl condensed"
+    >
+      YARDAGES
+    </a>
+  </nav>
+</div>
