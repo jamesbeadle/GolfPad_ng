@@ -1,6 +1,10 @@
 <div
-  *ngIf="expanded"
-  class="fixed inset-0 bg-BrandYellow flex flex-col items-center justify-center transition-opacity duration-300 ease-in-out"
+  [class.opacity-0]="!expanded"
+  [class.pointer-events-none]="!expanded"
+  class="
+    fixed inset-0 bg-BrandYellow flex flex-col px-4 py-4
+    transition-opacity duration-300 ease-in-out
+  "
   style="z-index: 9999"
 >
   <button
@@ -9,46 +13,46 @@
   >
     -
   </button>
-
-  <nav class="flex flex-col w-full text-blue px-4">
+  <nav class="mt-16 ml-4 flex flex-col space-y-4 text-blue">
     <a
       routerLink="/"
+      (click)="handleCloseNav()" 
       routerLinkActive="text-black"
       [routerLinkActiveOptions]="{ exact: true }"
       class="text-4xl condensed"
     >
       HOME
     </a>
-
     <a
       routerLink="/whitepaper"
+      (click)="handleCloseNav()" 
       routerLinkActive="text-black"
       [routerLinkActiveOptions]="{ exact: true }"
       class="text-4xl condensed"
     >
       WHITEPAPER
     </a>
-
     <a
       routerLink="/games"
+      (click)="handleCloseNav()" 
       routerLinkActive="text-black"
       [routerLinkActiveOptions]="{ exact: true }"
       class="text-4xl condensed"
     >
       GAMES
     </a>
-
     <a
       routerLink="/courses"
+      (click)="handleCloseNav()" 
       routerLinkActive="text-black"
       [routerLinkActiveOptions]="{ exact: true }"
       class="text-4xl condensed"
     >
       COURSES
     </a>
-
     <a
       routerLink="/yardages"
+      (click)="handleCloseNav()" 
       routerLinkActive="text-black"
       [routerLinkActiveOptions]="{ exact: true }"
       class="text-4xl condensed"
