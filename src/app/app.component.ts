@@ -23,14 +23,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  ngAfterViewInit() {
-    const spinner = document.getElementById('global-spinner');
-    if (spinner) {
-      spinner.style.display = 'none';
-    }
-  }
-
-
   toggleNav(): void {
     console.log("here")
     this.expanded = !this.expanded;

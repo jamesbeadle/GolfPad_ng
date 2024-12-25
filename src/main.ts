@@ -14,4 +14,9 @@ bootstrapApplication(AppComponent, {
     provideAuth(() => getAuth()),
     provideAnimations()
   ],
+}).then(() => {
+  const spinner = document.getElementById('global-spinner');
+  if (spinner) {
+    spinner.remove();
+  }
 }).catch(err => console.error(err));
