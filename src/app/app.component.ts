@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NavigationComponent } from './shared/navigation/navigation.component';
@@ -22,6 +22,14 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  ngAfterViewInit() {
+    const spinner = document.getElementById('global-spinner');
+    if (spinner) {
+      spinner.style.display = 'none';
+    }
+  }
+
 
   toggleNav(): void {
     console.log("here")
