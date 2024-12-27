@@ -14,7 +14,7 @@ import { firstValueFrom } from 'rxjs';
 export class MerveComponent {
   isOpen = false;
   userInput = '';
-  messages: { text: string; sender: 'user' | 'ai' }[] = [];
+  messages: { text: string; sender: 'user' | 'ai', ai_response: LangChainReponse | null }[] = [];
   isTyping = false;
 
   constructor(private http: HttpClient) {}
@@ -26,7 +26,7 @@ export class MerveComponent {
   async sendMessage() {
     if (!this.userInput.trim()) return;
 
-    this.messages.push({ text: this.userInput, sender: 'user' });
+    this.messages.push({ text: this.userInput, sender: 'user', ai_response: null });
     const userMessage = this.userInput;
     this.userInput = '';
 
@@ -37,14 +37,24 @@ export class MerveComponent {
           'https://golfpad-langchain-m2az.onrender.com/chat',
           { question: userMessage },
         )
-      );
+      ) as LangChainReponse;
       this.isTyping = false;
 
-      const aiResponse = langchainResponse?.answer || 'I am here to help with question related to the official rules of golf. If you have any other golf rules-related questions, feel free to ask!';
-      this.messages.push({ text: aiResponse, sender: 'ai' });
+      const aiResponse = langchainResponse;
+      console.log(aiResponse)
+      this.messages.push({ text: aiResponse.answer.content, sender: 'ai', ai_response: aiResponse });
     } catch (error) {
       console.error('Error contacting LangChain model:', error);
-      this.messages.push({ text: 'Error contacting AI service.', sender: 'ai' });
+      this.messages.push({ text: 'Error contacting AI service.', sender: 'ai', ai_response: null });
     }
   }
+}
+
+export interface LangChainReponse {
+  answer: {
+    headline: string;
+    content: string;
+    actions: string[];
+    rule_number: string;
+  };
 }
