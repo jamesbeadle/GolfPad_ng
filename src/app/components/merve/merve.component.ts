@@ -3,13 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
-import { environment } from '../../environments/environment'; 
 
 @Component({
   selector: 'app-merve',
-  imports: [
-    CommonModule,
-    FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './merve.component.html',
   styleUrl: './merve.component.css',
   standalone: true
@@ -18,6 +15,7 @@ export class MerveComponent {
   isOpen = false;
   userInput = '';
   messages: { text: string; sender: 'user' | 'ai' }[] = [];
+  isTyping = false;
 
   constructor(private http: HttpClient) {}
 
@@ -33,43 +31,20 @@ export class MerveComponent {
     this.userInput = '';
 
     try {
-      const response: any = await firstValueFrom(
+      this.isTyping = true;
+      const langchainResponse: any = await firstValueFrom(
         this.http.post(
-          'https://api.openai.com/v1/chat/completions',
-          {
-            model: 'gpt-3.5-turbo',
-            messages: [
-              {
-                role: 'system',
-                content:
-                  `You are a helpful assistant that specializes in the official rules of golf. ` +
-                  `Only answer questions related to golf rules. If asked anything unrelated, ` +
-                  `politely refuse to answer or redirect to official resources.`
-              },
-              {
-                role: 'user',
-                content: userMessage
-              }
-            ]
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${environment.openAIAPIKey}`,
-            },
-          }
+          'https://golfpad-langchain-m2az.onrender.com/chat',
+          { question: userMessage },
         )
       );
+      this.isTyping = false;
 
-      const aiText = response?.choices?.[0]?.message?.content ?? 'No response.';
-      this.messages.push({ text: aiText, sender: 'ai' });
+      const aiResponse = langchainResponse?.answer || 'I am here to help with question related to the official rules of golf. If you have any other golf rules-related questions, feel free to ask!';
+      this.messages.push({ text: aiResponse, sender: 'ai' });
     } catch (error) {
-      console.error('Error contacting OpenAI:', error);
-      this.messages.push({
-        text: 'Error contacting AI service.',
-        sender: 'ai',
-      });
+      console.error('Error contacting LangChain model:', error);
+      this.messages.push({ text: 'Error contacting AI service.', sender: 'ai' });
     }
   }
-
 }
