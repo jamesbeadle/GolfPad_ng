@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '../../environments/environment'; 
 
 @Component({
   selector: 'app-merve',
@@ -54,7 +55,7 @@ export class MerveComponent {
           {
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer sk-svcacct-pSC9n_r7hhWIOnHL3LiLYoH4s3dC8ruV2XU5BfILRvKPOykBb7CdpXkdkoPY6DUT3BlbkFJ01hBkDneJMhctlG1EagAOMK3mKbAxIQG_t8RCChX89_JF7wihdy4n1xe1O1utAA`,
+              Authorization: `Bearer ${environment.openAIAPIKey}`,
             },
           }
         )

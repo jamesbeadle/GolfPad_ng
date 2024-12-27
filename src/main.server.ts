@@ -6,7 +6,7 @@ import { routes } from './app/app.routes';
 
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
-import { firebase } from './app/environments/environment';
+import { environment } from './app/environments/environment';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 
@@ -17,7 +17,7 @@ const bootstrap = () =>
           provideAnimations(),
           provideHttpClient(withFetch()),
           provideRouter(routes),
-          provideFirebaseApp(() => initializeApp(firebase.firebaseConfig))
+          provideFirebaseApp(() => initializeApp(environment.firebaseConfig))
     ],
   });
 
