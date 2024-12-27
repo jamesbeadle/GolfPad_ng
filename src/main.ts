@@ -1,4 +1,6 @@
 import { bootstrapApplication } from '@angular/platform-browser';
+import { provideHttpClient, withFetch } from '@angular/common/http';
+
 import { AppComponent } from './app/app.component';
 import { provideRouter } from '@angular/router';
 import { routes } from './app/app.routes';
@@ -9,10 +11,11 @@ import { firebase } from './app/environments/environment';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideRouter(routes),
-    provideFirebaseApp(() => initializeApp(firebase.firebaseConfig)),
     provideAuth(() => getAuth()),
-    provideAnimations()
+    provideAnimations(),
+    provideHttpClient(withFetch()),
+    provideRouter(routes),
+    provideFirebaseApp(() => initializeApp(firebase.firebaseConfig))
   ],
 }).then(() => {
   const spinner = document.getElementById('global-spinner');

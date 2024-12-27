@@ -44,8 +44,16 @@ body {
   font-family: "Mona Sans Condensed Extra Bold";
 }
 
+.brand-header {
+  @apply condensed text-black 
+}
+
 .brand-button{
   @apply bg-BrandForest px-4 py-2 rounded text-BrandYellow
+}
+
+.brand-input{
+  @apply bg-white border-BrandForest px-4 py-2 rounded text-black
 }
 
 /* You can add global styles to this file, and also import other style files */
