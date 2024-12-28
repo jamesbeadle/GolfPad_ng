@@ -37,9 +37,9 @@
           'text-left': msg.sender === 'ai'
         }"
       >
-        <div *ngIf="msg.ai_response">
-          <p class="px-2 text-base condensed mt-1">{{msg.ai_response.answer.headline}}</p>
-          <p class="px-2 pb-2 text-xs condensed">Rule {{msg.ai_response.answer.rule_number}}</p>
+        <div *ngIf="msg.ai_response && msg.ai_response.answer.rule_number">
+          <p *ngIf="msg.ai_response.answer.headline" class="px-2 text-base condensed mt-1">{{msg.ai_response.answer.headline}}</p>
+          <p *ngIf="msg.ai_response.answer.rule_number" class="px-2 pb-2 text-xs condensed">Rule {{msg.ai_response.answer.rule_number}}</p>
         </div>
         
         <div
