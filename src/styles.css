@@ -73,11 +73,7 @@ body {
   .social-links a {
     @apply text-xs lg:text-base text-white underline p-2;
   }
-  
-  img {
-    @apply w-12 h-12 rounded-full;
-  }
-  
+    
   .BrandTab {
     @apply px-2 py-1 condensed
   }

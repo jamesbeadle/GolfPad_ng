@@ -1,18 +1,19 @@
 import { Component } from '@angular/core';
-import { BrandTextComponent } from "../../shared/brand-text/brand-text.component";
-import { MulligansComponent } from "./modals/mulligans/mulligans.component";
-import { BandsComponent } from "./modals/bands/bands.component";
-import { BuildItComponent } from "./modals/build-it/build-it.component";
-import { NextUpComponent } from "./modals/next-up/next-up.component";
+import { BrandTextComponent } from '../../shared/brand-text/brand-text.component';
+import { MulligansComponent } from './modals/mulligans/mulligans.component';
+import { BandsComponent } from './modals/bands/bands.component';
+import { BuildItComponent } from './modals/build-it/build-it.component';
+import { NextUpComponent } from './modals/next-up/next-up.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-product',
-  templateUrl: './product.component.html',
+  selector: 'app-new-games',
+  templateUrl: './new-games.component.html',
+  styleUrl: './new-games.component.css',
   imports: [BrandTextComponent, MulligansComponent, BandsComponent, BuildItComponent, NextUpComponent, CommonModule],
   standalone: true
 })
-export class ProductComponent {
+export class NewGamesComponent {
   showMulligans = false;
   showBands = false;
   showBuildIt = false;
