@@ -49,10 +49,13 @@ export default {
         BrandDarkGray: "#8C8C8C",
         BrandLightGray: "#F3F3F3",
         BrandDivider: "#DDDDDD",
+        BrandTextGray: "#4b5563",
+        BrandBgGray: "#f9fafb"
       },
       fontFamily: {
-        monaSans: ['MonaSansCondensed-Regular', 'sans-serif'],
-        condensed: ['MonaSansCondensed-Regular', 'sans-serif']
+        mona: ['Mona Sans', 'sans-serif'],
+        monaSans: ['Mona Sans', 'sans-serif'],
+        condensed: ['Mona Sans Condensed', 'sans-serif']
       },
       fontSize: {
         body: ["16px", "22.4px"],

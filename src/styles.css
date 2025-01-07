@@ -5,43 +5,50 @@
 @font-face {
   font-family: 'Mona Sans';
   src: url('/fonts/MonaSans-Regular.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-display: swap;
-  font-family: "Mona Sans Semi Bold";
-  font-style: normal;
   font-weight: 400;
-  src: url("/fonts/MonaSans-SemiBold.woff2") format("woff2");
-}
-@font-face {
-  font-display: swap;
-  font-family: "Mona Sans Condensed";
   font-style: normal;
-  font-weight: 400;
-  src: url("/fonts/MonaSansCondensed-Regular.woff2")
-    format("woff2");
-}
-@font-face {
   font-display: swap;
-  font-family: "Mona Sans Condensed Extra Bold";
+}
+
+@font-face {
+  font-family: 'Mona Sans';
+  src: url('/fonts/MonaSans-SemiBold.woff2') format('woff2');
+  font-weight: 600;
   font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Mona Sans Condensed';
+  src: url('/fonts/MonaSansCondensed-Regular.woff2') format('woff2');
   font-weight: 400;
-  src: url("/fonts/MonaSansCondensed-ExtraBold.woff2")
-    format("woff2");
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Mona Sans Condensed';
+  src: url('/fonts/MonaSansCondensed-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
 }
 
 body {
-  font-family: "Mona Sans", sans-serif !important;
+  font-family: 'Mona Sans', sans-serif !important;
   color: white !important;
   height: 100vh;
   margin: 0;
-  background-color: var(--GolfPadYellow);
+  background-color: var(--BrandYellow);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .condensed {
-  font-family: "Mona Sans Condensed Extra Bold";
+  font-family: "Mona Sans Condensed", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  font-weight: 800;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .brand-header {
@@ -59,7 +66,7 @@ body {
 /* You can add global styles to this file, and also import other style files */
 /* src/app/components/nav-overlay/nav-overlay.component.css */
 .nav-overlay {
-    @apply flex min-h-screen flex-col relative bg-gray-800 text-white;
+    @apply relative flex flex-col min-h-screen text-white bg-BrandDarkGray;
   }
   
   .nav-item {
@@ -67,11 +74,11 @@ body {
   }
   
   .nav-item button {
-    @apply text-3xl lg:text-6xl font-bold;
+    @apply text-3xl font-bold lg:text-6xl;
   }
   
   .social-links a {
-    @apply text-xs lg:text-base text-white underline p-2;
+    @apply p-2 text-xs text-white underline lg:text-base;
   }
     
   .BrandTab {
