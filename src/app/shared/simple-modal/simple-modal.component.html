@@ -4,19 +4,21 @@
   (click)="closeModal()" 
 >
   <div 
-    class="relative w-full max-w-3xl bg-white rounded shadow p-4 max-h-[90vh] overflow-y-auto"
+    class="relative w-full max-w-3xl bg-white rounded shadow max-h-[90vh] overflow-y-auto mb-4"
     (click)="$event.stopPropagation()"
   >
-    <button 
-      (click)="closeModal()" 
-      class="absolute font-bold top-2 right-2 text-BrandDarkGray hover:text-BrandTextGray"
-    >
-      &times;
-    </button>
-
-    <h2 class="mb-2 text-xl font-bold">
-      {{ title }}
-    </h2>
+    <div class="flex items-center justify-between p-3 bg-BrandYellow">
+      <h2 class="pl-1 text-3xl condensed">
+        {{ title }}
+      </h2>
+      
+      <button 
+        (click)="closeModal()" 
+        class="flex items-center justify-center text-xl font-bold text-white bg-black rounded-full shadow-md w-9 h-9 hover:bg-BrandDarkGray"
+      >
+        &times;
+      </button>
+    </div>
 
     <ng-content></ng-content>
   </div>
