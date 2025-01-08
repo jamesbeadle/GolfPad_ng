@@ -5,26 +5,26 @@
   Chat with Merve
 </button>
 
-<div *ngIf="isOpen" class="fixed inset-0 flex items-end justify-end z-50 p-4 text-black">
-  <div class="w-full max-w-sm h-3/4 bg-white shadow-lg rounded-md flex flex-col">
+<div *ngIf="isOpen" class="fixed inset-0 z-50 flex items-end justify-end p-4 text-black">
+  <div class="flex flex-col w-full max-w-sm bg-white rounded-md shadow-lg h-3/4">
 
     <div class="flex items-center justify-between p-2 border-b">
-      <h2 class="brand-header flex flex-row items-center">
+      <h2 class="flex flex-row items-center brand-header">
         
         <img src="token.png" alt="token" class="w-4 h-4 mr-1" />
         Chat with Merve
       </h2>
-      <button (click)="toggleChat()" class="text-gray-500 hover:text-black">
+      <button (click)="toggleChat()" class="text-BrandDarkGray hover:text-BrandForest">
         ✕
       </button>
     </div>
 
-    <div class="flex-1 overflow-auto p-2 space-y-2 relative">
+    <div class="relative flex-1 p-2 space-y-2 overflow-auto">
       <div
         *ngIf="messages.length === 0"
-        class="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center"
+        class="absolute top-0 left-0 flex flex-col items-center justify-center w-full h-full"
       >
-        <p class="text-gray-500 text-center mb-4">
+        <p class="mb-4 text-center text-BrandDarkGray">
           Ask Merve anything about golf...
         </p>
         <img src="token.png" alt="token" />
@@ -38,7 +38,7 @@
         }"
       >
         <div *ngIf="msg.ai_response && msg.ai_response.answer.rule_number">
-          <p *ngIf="msg.ai_response.answer.headline" class="px-2 text-base condensed mt-1">{{msg.ai_response.answer.headline}}</p>
+          <p *ngIf="msg.ai_response.answer.headline" class="px-2 mt-1 text-base condensed">{{msg.ai_response.answer.headline}}</p>
           <p *ngIf="msg.ai_response.answer.rule_number" class="px-2 pb-2 text-xs condensed">Rule {{msg.ai_response.answer.rule_number}}</p>
         </div>
         
@@ -46,15 +46,15 @@
           class="inline-block px-3 py-2 mb-1 rounded-lg"
           [ngClass]="{
             'bg-BrandForest text-BrandYellow': msg.sender === 'user',
-            'bg-gray-200 text-black': msg.sender === 'ai'
+            'bg-BrandLightGray text-black': msg.sender === 'ai'
           }"
         >
           {{ msg.text }}
         </div>
 
         <div *ngIf="msg.ai_response && msg.ai_response.answer.actions.length > 0">
-          <p class="px-2 text-base condensed mt-1">What Now?</p>
-          <ul class="list-disc pl-5">
+          <p class="px-2 mt-1 text-base condensed">What Now?</p>
+          <ul class="pl-5 list-disc">
             <li  *ngFor="let action of msg.ai_response.answer.actions"
                 class="px-2 pt-1 rounded"
               >
@@ -65,20 +65,20 @@
       </div>
       
       <div *ngIf="isTyping" class="text-left">
-        <div class="inline-block px-3 py-2 mb-1 rounded-lg bg-gray-200 text-black flex items-center space-x-2">
+        <div class="flex items-center inline-block px-3 py-2 mb-1 space-x-2 text-black rounded-lg bg-BrandLightGray">
           <span class="text-sm">Merve is typing</span>
       
           <div class="flex items-center space-x-1">
             <div
-              class="w-2 h-2 bg-gray-600 rounded-full animate-bounce"
+              class="w-2 h-2 rounded-full bg-BrandDarkGray animate-bounce"
               style="animation-delay: 0s"
             ></div>
             <div
-              class="w-2 h-2 bg-gray-600 rounded-full animate-bounce"
+              class="w-2 h-2 rounded-full bg-BrandDarkGray animate-bounce"
               style="animation-delay: 0.2s"
             ></div>
             <div
-              class="w-2 h-2 bg-gray-600 rounded-full animate-bounce"
+              class="w-2 h-2 rounded-full bg-BrandDarkGray animate-bounce"
               style="animation-delay: 0.4s"
             ></div>
           </div>
@@ -86,7 +86,7 @@
       </div>      
     </div>
 
-    <div class="p-2 flex items-center space-x-2">
+    <div class="flex items-center p-2 space-x-2">
       <input
         type="text"
         [(ngModel)]="userInput"
@@ -96,7 +96,7 @@
       />
       <button
         (click)="sendMessage()"
-        class="brand-button flex flex-row items-center"
+        class="flex flex-row items-center brand-button"
       >
         Send
       </button>

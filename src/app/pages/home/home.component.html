@@ -1,15 +1,15 @@
 
-<div class="relative flex flex-col w-full h-full min-h-screen bg-BrandYellow text-center px-4 overflow-hidden">
+<div class="relative flex flex-col w-full h-full min-h-screen px-4 overflow-hidden text-center bg-BrandYellow">
   
-  <div class="relative flex flex-col items-center justify-center flex-1 z-10">
-    <h1 class="font-bold text-green-700">WELCOME TO <span class="condensed">GOLFPAD</span></h1>
-    <h2 class="text-4xl font-black condensed text-black md:text-6xl">
+  <div class="relative z-10 flex flex-col items-center justify-center flex-1">
+    <h1 class="font-bold text-BrandForest">WELCOME TO <span class="condensed">GOLFPAD</span></h1>
+    <h2 class="text-4xl font-black text-black condensed md:text-6xl">
       THE FUTURE OF GOLF STARTS HERE
     </h2>
     
-    <button *ngIf="!isLoggedIn" class="brand-button flex flex-row items-center" (click)="googleSignIn()">
+    <button *ngIf="!isLoggedIn" class="flex flex-row items-center brand-button" (click)="googleSignIn()">
       Connect with Google
-      <span class="ml-2 flex flex-row items-center">
+      <span class="flex flex-row items-center ml-2">
 
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-4">
           <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -19,7 +19,7 @@
     </button>
     
     <a href="/whitepaper">
-      <button *ngIf="isLoggedIn" class="brand-button flex flex-row items-center">
+      <button *ngIf="isLoggedIn" class="flex flex-row items-center brand-button">
         Whitepaper
       </button>
     </a>
