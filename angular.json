@@ -3,9 +3,19 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "GolfPad_ng": {
+    "supabase-angular": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "standalone": false
+        },
+        "@schematics/angular:directive": {
+          "standalone": false
+        },
+        "@schematics/angular:pipe": {
+          "standalone": false
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -13,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/golf-pad-ng",
+            "outputPath": "dist/supabase-angular",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -24,22 +34,12 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              },
-              {
-                "glob": "**/*",
-                "input": "src/assets/fonts",
-                "output": "/assets/fonts"
               }
             ],
             "styles": [
               "src/styles.css"
             ],
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "prerender": true,
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -69,10 +69,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "GolfPad_ng:build:production"
+              "buildTarget": "supabase-angular:build:production"
             },
             "development": {
-              "buildTarget": "GolfPad_ng:build:development"
+              "buildTarget": "supabase-angular:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -102,8 +102,5 @@
         }
       }
     }
-  },
-  "cli": {
-    "analytics": false
   }
 }
