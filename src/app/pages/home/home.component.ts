@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
 import { first, map, Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { SupabaseService } from '../../services/supabase.service';
 
 @Component({
   selector: 'app-home',
@@ -13,18 +13,13 @@ import { CommonModule } from '@angular/common';
 export class HomeComponent implements OnInit {
   isLoggedIn = false;
 
-  constructor(private authService: AuthService) {
-    this.authService.$profile.pipe(
-      first(),
-      map(profile => {
-
-        this.isLoggedIn = !!profile;
-      }))
+  constructor(private readonly supabase: SupabaseService) {
+    this.supabase.authChanges((_, session) => (this.isLoggedIn == !!session))
   }
 
   async googleSignIn() {
     try {
-      await this.authService.signInWithGoogle();
+      await this.supabase.signIn();
     } catch (error) {
       console.error('Google Sign-In error: ', error);
     }

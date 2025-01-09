@@ -4,8 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { NavigationComponent } from './shared/navigation/navigation.component';
 import { NaviationOverlayComponent } from './shared/naviation-overlay/naviation-overlay.component';
 import { MerveComponent } from "./components/merve/merve.component";
-import { AuthService } from './services/auth.service';
-import { first, map } from 'rxjs';
+import { SupabaseService } from './services/supabase.service'
 
 @Component({
   selector: 'app-root',
@@ -25,12 +24,8 @@ export class AppComponent implements OnInit {
   isHomepage = false;
   isLoggedIn = false;
 
-  constructor(private authService: AuthService) {
-    this.authService.$profile.pipe(
-      first(),
-      map(profile => {
-        this.isLoggedIn = !!profile;
-      }))
+  constructor(private readonly supabase: SupabaseService) {
+    this.supabase.authChanges((_, session) => (this.isLoggedIn == !!session))
   }
   ngOnInit(){}
 
