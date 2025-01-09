@@ -5,6 +5,7 @@ import { NavigationComponent } from './shared/navigation/navigation.component';
 import { NaviationOverlayComponent } from './shared/naviation-overlay/naviation-overlay.component';
 import { MerveComponent } from "./components/merve/merve.component";
 import { AuthService } from './services/auth.service';
+import { first, map } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -25,9 +26,11 @@ export class AppComponent implements OnInit {
   isLoggedIn = false;
 
   constructor(private authService: AuthService) {
-    this.authService.currentUser$.subscribe(user => {
-      this.isLoggedIn = !!user;
-    });
+    this.authService.$profile.pipe(
+      first(),
+      map(profile => {
+        this.isLoggedIn = !!profile;
+      }))
   }
   ngOnInit(){}
 

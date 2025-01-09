@@ -1,36 +1,103 @@
-// auth.service.ts
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import {
-  Auth,
-  user,                // an observable that tracks the current user
-  signInWithPopup,
-  GoogleAuthProvider,
-  signOut,
-  User,
-} from '@angular/fire/auth';
+import { RealtimeChannel, User } from '@supabase/supabase-js';
+import { BehaviorSubject, first, Observable, skipWhile } from 'rxjs';
+import { SupabaseService } from './supabase.service';
 
-/**
- * Modern AngularFire Auth Service (no 'compat').
- * Tracks the currently logged-in user using a BehaviorSubject.
- */
-@Injectable({ providedIn: 'root' })
+export interface Profile {
+  user_id: string;
+  photo_url: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
-  private currentUserSubject = new BehaviorSubject<User | null>(null);
-  /** Expose the current user as an observable for components to subscribe to. */
-  currentUser$ = this.currentUserSubject.asObservable();
+  private _$user = new BehaviorSubject<User | null | undefined>(undefined);
+  $user = this._$user.pipe(skipWhile(_ => typeof _ === 'undefined')) as Observable<User | null>;
+  private user_id?: string;
 
-  constructor(private auth: Auth) {
-    // Subscribe to the 'user' observable from AngularFire, which emits the active User or null.
-    user(this.auth).subscribe((usr) => this.currentUserSubject.next(usr));
+  private _$profile = new BehaviorSubject<Profile | null | undefined>(undefined);
+  $profile = this._$profile.pipe(skipWhile(_ => typeof _ === 'undefined')) as Observable<Profile | null>;
+  private profile_subscription?: RealtimeChannel;
+
+
+  constructor(private supabase: SupabaseService) {
+    this.supabase.client.auth.getUser().then(({ data, error }) => {
+      this._$user.next(data && data.user && !error ? data.user : null);
+  
+      this.supabase.client.auth.onAuthStateChange((event, session) => {
+        this._$user.next(session?.user ?? null);
+      });
+    });
+
+    this.$user.subscribe(user => {
+      if (user) {
+        if (user.id !== this.user_id) {
+          const user_id = user.id;
+          this.user_id = user_id;
+    
+          this.supabase
+            .client
+            .from('profiles')
+            .select('*')
+            .match({ user_id })
+            .single()
+            .then(res => {
+              
+              this._$profile.next(res.data ?? null);
+    
+              this.profile_subscription = this.supabase
+                .client
+                .channel('public:profiles')
+                .on('postgres_changes', {
+                  event: '*',
+                  schema: 'public',
+                  table: 'profiles',
+                  filter: 'user_id=eq.' + user.id
+                }, (payload: any) => {
+                
+                  this._$profile.next(payload.new);
+                  
+                })
+                .subscribe()
+    
+            })
+        }
+      }
+      else {
+        this._$profile.next(null);
+        delete this.user_id;
+        if (this.profile_subscription) {
+          this.supabase.client.removeChannel(this.profile_subscription).then(res => {
+            console.log('Removed profile channel subscription with status: ', res);
+          });
+        }
+      }
+    })
+    
+  
   }
 
-  async signInWithGoogle(): Promise<void> {
-    const provider = new GoogleAuthProvider();
-    await signInWithPopup(this.auth, provider);
+  signInWithGoogle() {
+    return new Promise<void>((resolve, reject) => {
+  
+      this._$profile.next(undefined);
+      this.supabase.client.auth.signInWithOAuth({ provider: 'google' })
+        .then(({ data, error }) => {
+          if (error || !data) reject('Error connecting google auth');
+          this.$profile.pipe(first()).subscribe(() => {
+            resolve();
+          });
+        })
+    })
   }
+  
+  logout() {
+    return this.supabase.client.auth.signOut()
+  }
+  
 
-  async signOut(): Promise<void> {
-    await signOut(this.auth);
-  }
 }

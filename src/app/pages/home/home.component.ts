@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { Observable } from 'rxjs';
+import { first, map, Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -14,9 +14,12 @@ export class HomeComponent implements OnInit {
   isLoggedIn = false;
 
   constructor(private authService: AuthService) {
-    this.authService.currentUser$.subscribe(user => {
-      this.isLoggedIn = !!user;
-    });
+    this.authService.$profile.pipe(
+      first(),
+      map(profile => {
+
+        this.isLoggedIn = !!profile;
+      }))
   }
 
   async googleSignIn() {
