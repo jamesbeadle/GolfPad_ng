@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "GolfPad_ng": {
+    "golfpad_angular": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/golf-pad-ng",
+            "outputPath": "dist/golfpad_angular",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -24,22 +24,12 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              },
-              {
-                "glob": "**/*",
-                "input": "src/assets/fonts",
-                "output": "/assets/fonts"
               }
             ],
             "styles": [
               "src/styles.css"
             ],
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "prerender": true,
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -69,10 +59,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "GolfPad_ng:build:production"
+              "buildTarget": "golfpad_angular:build:production"
             },
             "development": {
-              "buildTarget": "GolfPad_ng:build:development"
+              "buildTarget": "golfpad_angular:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -102,8 +92,5 @@
         }
       }
     }
-  },
-  "cli": {
-    "analytics": false
   }
 }
