@@ -29,7 +29,7 @@
         </p>
         <img src="token.png" alt="token" />
       </div>
-      
+
       <div
         *ngFor="let msg of messages"
         [ngClass]="{
@@ -89,12 +89,11 @@
     <div class="flex items-center p-2 space-x-2">
       <input
         type="text"
-        formControlName="userInput"
+        [(ngModel)]="userInput"
         class="flex-1 brand-input"
         placeholder="Ask Merve..."
         (keydown.enter)="sendMessage()"
       />
-
       <button
         (click)="sendMessage()"
         class="flex flex-row items-center brand-button"

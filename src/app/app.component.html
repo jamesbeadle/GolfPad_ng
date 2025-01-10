@@ -6,9 +6,9 @@
 
   <router-outlet></router-outlet>
 
-  <app-nav-overlay
+  <app-naviation-overlay
     [expanded]="expanded"
     (closeNav)="toggleNav()"
-  ></app-nav-overlay>
+  ></app-naviation-overlay>
   <app-merve *ngIf="isLoggedIn" style="z-index: 100;"></app-merve>
 </div>

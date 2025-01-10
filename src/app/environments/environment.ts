@@ -1,6 +1,14 @@
 export const environment = {
   production: false,
-  supabaseUrl: 'https://uwavyoukdryflagvxhhc.supabase.co',
-  supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV3YXZ5b3VrZHJ5ZmxhZ3Z4aGhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY0MjQ0NTksImV4cCI6MjA1MjAwMDQ1OX0.w-SwOo8TfDYfZKj1DzUpGPlG02xQ-QrdfFzbVA8V-Nw',
+  firebaseConfig: {
+    apiKey: "AIzaSyD8bWCkei6dFyaLP4A1Xj8vQwZHJY7L56s",
+    authDomain: "golfpad3.firebaseapp.com",
+    projectId: "golfpad3",
+    storageBucket: "golfpad3.firebasestorage.app",
+    messagingSenderId: "557801839701",
+    appId: "1:557801839701:web:aa4502bda9d6e36b5748dc",
+    measurementId: "G-ZPWCR7NB62"
+  },
   openAIAPIKey: "sk-svcacct-pSC9n_r7hhWIOnHL3LiLYoH4s3dC8ruV2XU5BfILRvKPOykBb7CdpXkdkoPY6DUT3BlbkFJ01hBkDneJMhctlG1EagAOMK3mKbAxIQG_t8RCChX89_JF7wihdy4n1xe1O1utAA"
-}
+};
+  

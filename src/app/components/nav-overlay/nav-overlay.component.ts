@@ -1,15 +1,14 @@
-import { Component, EventEmitter, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavItem } from '../../models/nav-item.model';
 
 @Component({
   selector: 'app-nav-overlay',
   templateUrl: './nav-overlay.component.html',
-  styleUrl: './nav-overlay.component.css',
-  standalone: false
+  styleUrls: ['./nav-overlay.component.css'],
 })
 export class NavOverlayComponent implements OnInit {
-  @Input() expanded: boolean = false;
+  expanded: boolean = false;
   selectedRoute: string = 'home';
   toggleNav = new EventEmitter<void>();
 
