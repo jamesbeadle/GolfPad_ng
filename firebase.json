@@ -1,0 +1,14 @@
+{
+    "functions": {
+      "source": "functions"
+    },
+    "hosting": {
+      "public": "dist/GolfPad_ng",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ]
+    }
+  }
+  
