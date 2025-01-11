@@ -13,12 +13,21 @@ export class NaviationOverlayComponent {
   @Input() expanded = false;
   @Output() closeNav = new EventEmitter<void>();
 
-  constructor(private authService: AuthService){
+  isLoggedIn = false
 
+  constructor(private authService: AuthService){
+    this.authService.currentUser$.subscribe(user => {
+      this.isLoggedIn = !!user;
+      console.log(user);
+    });
   }
 
   handleCloseNav(): void {
     this.closeNav.emit();
+  }
+
+  handleLogin(): void {
+    this.authService.signInWithGoogle();
   }
 
   handleLogout() : void {
