@@ -1,7 +1,7 @@
 
 <div class="relative flex flex-col w-full h-full min-h-screen px-4 overflow-hidden text-center bg-BrandYellow">
   
-  <div class="relative z-10 flex flex-col items-center justify-center flex-1">
+  <div *ngIf="!isLoading" class="relative z-10 flex flex-col items-center justify-center flex-1">
     <h1 class="font-bold text-BrandForest">WELCOME TO <span class="condensed">GOLFPAD</span></h1>
     <h2 class="text-4xl font-black text-black condensed md:text-6xl">
       THE FUTURE OF GOLF STARTS HERE

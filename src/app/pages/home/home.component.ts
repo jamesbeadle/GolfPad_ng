@@ -12,10 +12,13 @@ import { CommonModule } from '@angular/common';
 })
 export class HomeComponent implements OnInit {
   isLoggedIn = false;
+  isLoading = true;
 
   constructor(private authService: AuthService) {
+    console.log(this.authService)
     this.authService.currentUser$.subscribe(user => {
       this.isLoggedIn = !!user;
+      this.isLoading = false;
     });
   }
 
@@ -29,6 +32,5 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit() {
- 
   }
 }

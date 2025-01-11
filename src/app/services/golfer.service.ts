@@ -1,0 +1,42 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom, Observable } from 'rxjs';
+import { environment } from '../environments/environment';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class GolfersService {
+  
+  constructor(
+    private http: HttpClient
+  ) {}
+
+  async getGolfers(): Promise<any[]> {
+    return firstValueFrom(this.http.get<any[]>(`${environment.apiURL}/golfers`));
+  }
+
+  /*
+
+
+  async getGolfers(): Promise<any[]> {
+    const idToken = await this.afAuth.currentUser?.getIdToken(true);
+
+    return firstValueFrom(this.http.get<any[]>(`${environment.apiURL}/golfers`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`
+      }
+    }));
+  }
+
+  */
+
+  checkUsernameAvailable(username: string): Observable<boolean> {
+    return this.http.get<boolean>(`${environment.apiURL}/Golfers/CheckUsernameAvailable/${username}`
+    );
+  }
+
+  async createProfile(profileData: any): Promise<any> {
+    this.http.post<any[]>(`${environment.apiURL}/golfers`,profileData);
+  }
+}

@@ -5,7 +5,8 @@ import { NavigationComponent } from './shared/navigation/navigation.component';
 import { NaviationOverlayComponent } from './shared/naviation-overlay/naviation-overlay.component';
 import { MerveComponent } from "./components/merve/merve.component";
 import { AuthService } from './services/auth.service';
-import { GolfersService } from './services/golfers.service';
+import { ReactiveFormsModule } from '@angular/forms';
+import { GolfersService } from './services/golfer.service';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,8 @@ import { GolfersService } from './services/golfers.service';
     RouterOutlet,
     NavigationComponent,
     NaviationOverlayComponent,
-    MerveComponent
+    MerveComponent,
+    ReactiveFormsModule
 ],
   templateUrl: './app.component.html',
 })
@@ -26,12 +28,11 @@ export class AppComponent implements OnInit {
   isLoggedIn = false;
   golfers: any[] = [];
 
-  constructor(private authService: AuthService, private golfersService: GolfersService) {
+  constructor(private authService: AuthService, private golferService: GolfersService) {
     this.authService.currentUser$.subscribe(user => {
       this.isLoggedIn = !!user;
-      if (this.isLoggedIn) {
-        //this.fetchGolfers();
-      }
+      console.log(user)
+      this.fetchGolfers();
     });
   }
   ngOnInit(){
@@ -43,11 +44,8 @@ export class AppComponent implements OnInit {
       console.warn('User not logged in, cannot fetch golfers');
       return;
     }
-    try {
-      this.golfers = await this.golfersService.getGolfers();
-    } catch (err) {
-      console.error('Error getting golfers:', err);
-    }
+    let golfers = await this.golferService.getGolfers();
+    console.log(golfers)
   }
 
   toggleNav(): void {
@@ -55,6 +53,7 @@ export class AppComponent implements OnInit {
     this.expanded = !this.expanded;
   }
 
-  logout(): void {
+  async logout(): Promise<void> {
+    await this.authService.signOut();
   }
 }

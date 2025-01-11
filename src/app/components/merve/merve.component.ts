@@ -9,7 +9,6 @@ import { firstValueFrom } from 'rxjs';
   imports: [CommonModule, FormsModule],
   templateUrl: './merve.component.html',
   styleUrl: './merve.component.css',
-  standalone: true
 })
 export class MerveComponent {
   isOpen = false;

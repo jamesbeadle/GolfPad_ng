@@ -1,6 +1,6 @@
 // auth.service.ts
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged } from 'rxjs';
 import {
   Auth,
   user,                // an observable that tracks the current user
@@ -18,7 +18,7 @@ import {
 export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   /** Expose the current user as an observable for components to subscribe to. */
-  currentUser$ = this.currentUserSubject.asObservable();
+  currentUser$ = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
 
   constructor(private auth: Auth) {
     // Subscribe to the 'user' observable from AngularFire, which emits the active User or null.

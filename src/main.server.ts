@@ -8,14 +8,21 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { environment } from './app/environments/environment';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './app/interceptors/auth.interceptor';
 
 const bootstrap = () =>
   bootstrapApplication(AppComponent, {
     providers: [
           provideAuth(() => getAuth()),
           provideAnimations(),
-          provideHttpClient(withFetch()),
+          provideHttpClient(withFetch(), withInterceptorsFromDi()),
+          {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true
+          },      
           provideRouter(routes),
           provideFirebaseApp(() => initializeApp(environment.firebaseConfig))
     ],
