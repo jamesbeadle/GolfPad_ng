@@ -9,6 +9,7 @@ export const environment = {
     appId: "1:557801839701:web:aa4502bda9d6e36b5748dc",
     measurementId: "G-ZPWCR7NB62"
   },
-  openAIAPIKey: "sk-svcacct-pSC9n_r7hhWIOnHL3LiLYoH4s3dC8ruV2XU5BfILRvKPOykBb7CdpXkdkoPY6DUT3BlbkFJ01hBkDneJMhctlG1EagAOMK3mKbAxIQG_t8RCChX89_JF7wihdy4n1xe1O1utAA"
+  openAIAPIKey: "sk-svcacct-pSC9n_r7hhWIOnHL3LiLYoH4s3dC8ruV2XU5BfILRvKPOykBb7CdpXkdkoPY6DUT3BlbkFJ01hBkDneJMhctlG1EagAOMK3mKbAxIQG_t8RCChX89_JF7wihdy4n1xe1O1utAA",
+  apiURL: "https://golfpadapi.mangomeadow-d0c5ffaa.uksouth.azurecontainerapps.io"
 };
   
