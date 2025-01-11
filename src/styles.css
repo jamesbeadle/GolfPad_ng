@@ -56,7 +56,7 @@ body {
 }
 
 .brand-button{
-  @apply bg-BrandForest px-4 py-2 rounded text-BrandYellow
+  @apply bg-BrandForest px-4 py-2 rounded text-BrandYellow condensed
 }
 
 .brand-input{

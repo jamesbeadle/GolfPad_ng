@@ -22,14 +22,6 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  async googleSignIn() {
-    try {
-      await this.authService.signInWithGoogle();
-    } catch (error) {
-      console.error('Google Sign-In error: ', error);
-    }
-  }
-
   ngOnInit() {
   }
 }
