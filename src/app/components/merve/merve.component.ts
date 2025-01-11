@@ -41,7 +41,6 @@ export class MerveComponent {
       this.isTyping = false;
 
       const aiResponse = langchainResponse;
-      console.log(aiResponse)
       this.messages.push({ text: aiResponse.answer.content, sender: 'ai', ai_response: aiResponse });
     } catch (error) {
       console.error('Error contacting LangChain model:', error);

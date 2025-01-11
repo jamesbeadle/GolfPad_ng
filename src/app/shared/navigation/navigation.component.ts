@@ -12,7 +12,6 @@ export class NavigationComponent {
   @Output() openNav = new EventEmitter<void>();
 
   handleOpenNav(): void {
-    console.log("emit")
     this.openNav.emit();
   }
 }
