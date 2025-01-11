@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { map, catchError, switchMap } from 'rxjs/operators';
 import { of, timer } from 'rxjs';
 import { GolfersService } from '../../services/golfer.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -14,13 +15,21 @@ import { GolfersService } from '../../services/golfer.service';
 export class ProfileComponent implements OnInit {
   profileForm!: FormGroup;
   isSubmitting = false;
+  golfer: any = null;
+  isLoading = true;
 
   constructor(
     private fb: FormBuilder,
-    private golferService: GolfersService
+    private golferService: GolfersService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
+    this.initForm();
+    this.loadGolfer();
+  }
+
+  initForm() {
     this.profileForm = this.fb.group({
       username: [
         '', 
@@ -54,6 +63,23 @@ export class ProfileComponent implements OnInit {
       ],
       homeGolfClub: ['']
     });
+  }
+
+  async loadGolfer() {
+    try {
+      this.authService.currentUser$.subscribe(user => {
+        if(user != null){
+          this.golferService.getGolferById(user.uid).then(value => {
+            this.golfer = value;
+            console.log("value")
+            console.log(value)
+            this.isLoading = false;
+          });
+        }
+      });
+    } catch (error) {
+      console.error('Error loading golfer:', error);
+    }
   }
 
   usernameUniqueValidator(): AsyncValidatorFn {

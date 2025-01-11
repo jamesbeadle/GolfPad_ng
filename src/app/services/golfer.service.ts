@@ -32,11 +32,14 @@ export class GolfersService {
   */
 
   checkUsernameAvailable(username: string): Observable<boolean> {
-    return this.http.get<boolean>(`${environment.apiURL}/Golfers/CheckUsernameAvailable/${username}`
-    );
+    return this.http.get<boolean>(`${environment.apiURL}/Golfers/CheckUsernameAvailable/${username}`);
   }
 
   async createProfile(profileData: any): Promise<any> {
     this.http.post<any[]>(`${environment.apiURL}/golfers`,profileData);
+  }
+
+  async getGolferById(uid: string) : Promise<any> {
+    return firstValueFrom(this.http.get<boolean>(`${environment.apiURL}/Golfers/GetGolferByUID/${uid}`));
   }
 }

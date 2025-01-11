@@ -1,91 +1,69 @@
-<div class="max-w-md mx-auto p-4 text-black">
-    <h1 class="text-2xl font-bold mb-6">Your Profile</h1>
-  
-    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-4">
-  
-      <div>
-        <label for="username" class="block text-sm font-medium mb-1">Username</label>
-        <input 
-          id="username"
-          type="text"
-          formControlName="username"
-          class="w-full border border-gray-300 rounded p-2"
-          placeholder="Enter username (6-20 chars)"
-        />
-        <div *ngIf="profileForm.get('username')?.invalid && profileForm.get('username')?.touched" class="text-red-600 text-sm mt-1">
-          <span *ngIf="profileForm.get('username')?.errors?.['required']">Username is required.</span>
-          <span *ngIf="profileForm.get('username')?.errors?.['minlength']">Minimum 6 characters.</span>
-          <span *ngIf="profileForm.get('username')?.errors?.['maxlength']">Maximum 20 characters.</span>
-          <span *ngIf="profileForm.get('username')?.errors?.['pattern']">Alphanumeric only.</span>
-          <span *ngIf="profileForm.get('username')?.errors?.['usernameTaken']">That username is already taken.</span>
+<div class="page-container">
+  <div class="container mx-auto px-4 py-4 mb-32 md:mb-0">
+
+    <header class="flex items-center justify-between mb-4">
+      <h1 class="page-header">PROFILE</h1>
+      <div class="flex bg-BrandLightGray">
+        <button class="brand-button">DETAILS</button>
+        <button class="brand-button-inactive">SOCIAL</button>
+      </div>
+    </header>
+
+    <div *ngIf="!isLoading && golfer" class="bg-BrandLightGray p-4 min-h-[500px]">
+      <div class="flex flex-col md:flex-row items-stretch gap-4 h-full">
+
+        <div class="w-full md:w-1/3">
+          <img src="profile.jpg" alt="Profile" class="w-full h-auto rounded object-cover" />
         </div>
-      </div>
-  
-      <div>
-        <label for="firstName" class="block text-sm font-medium mb-1">First Name</label>
-        <input 
-          id="firstName"
-          type="text"
-          formControlName="firstName"
-          class="w-full border border-gray-300 rounded p-2"
-          placeholder="Enter first name"
-        />
-        <div *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched" class="text-red-600 text-sm mt-1">
-          <span *ngIf="profileForm.get('firstName')?.errors?.['required']">First name is required.</span>
-          <span *ngIf="profileForm.get('firstName')?.errors?.['minlength']">Minimum 6 characters.</span>
-          <span *ngIf="profileForm.get('firstName')?.errors?.['maxlength']">Maximum 20 characters.</span>
+
+        <div class="w-full md:w-1/3 flex flex-col p-4">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="font-bold brand-header">DETAILS</h2>
+            <span class="flex flex-row items-center">
+              <p class="text-xxs text-BrandDarkGray">UPDATE</p>
+
+              <div class="flex items-center space-x-4 ml-2">
+                <svg class="w-4" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16 2.66667C23.352 2.66667 29.3333 8.648 29.3333 16C29.3333 23.352 23.352 29.3333 16 29.3333C8.648 29.3333 2.66667 23.352 2.66667 16C2.66667 8.648 8.648 2.66667 16 2.66667ZM16 0C7.164 0 0 7.164 0 16C0 24.836 7.164 32 16 32C24.836 32 32 24.836 32 16C32 7.164 24.836 0 16 0ZM10.6747 17.2853L14.816 21.4253L9.33333 22.6667L10.6747 17.2853ZM24 12.2667L16.2133 20.1613L11.944 15.892L19.732 8L24 12.2667Z" fill="#313235"/>
+                </svg>
+              </div>
+            </span>
+          </div>
+
+          <div class="space-y-6">
+            <div>
+              <span class="uppercase text-BrandDarkGray text-xs tracking-wide">Username</span>
+              <h1 class="text-5xl brand-header uppercase">{{golfer.username}}</h1>
+            </div>
+
+            <div>
+              <span class="uppercase text-BrandDarkGray text-xs tracking-wide">Handicap</span>
+              <h1 class="text-2xl brand-header uppercase">{{golfer.handicap}}</h1>
+            </div>
+
+            <div>
+              <span class="uppercase text-BrandDarkGray text-xs tracking-wide">Home Course</span>
+              <h1 class="text-2xl brand-header uppercase">Not Set</h1>
+            </div>
+
+          </div>
         </div>
-      </div>
-  
-      <div>
-        <label for="lastName" class="block text-sm font-medium mb-1">Last Name</label>
-        <input 
-          id="lastName"
-          type="text"
-          formControlName="lastName"
-          class="w-full border border-gray-300 rounded p-2"
-          placeholder="Enter last name"
-        />
-        <div *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched" class="text-red-600 text-sm mt-1">
-          <span *ngIf="profileForm.get('lastName')?.errors?.['required']">Last name is required.</span>
-          <span *ngIf="profileForm.get('lastName')?.errors?.['minlength']">Minimum 6 characters.</span>
-          <span *ngIf="profileForm.get('lastName')?.errors?.['maxlength']">Maximum 20 characters.</span>
+
+        <div class="w-full md:w-1/3 p-4 bg-white rounded">
+          <h2 class="font-bold mb-2">Shot Yardages</h2>
+          <p>Coming soon.</p>
         </div>
+
       </div>
-  
-      <div>
-        <label for="handicap" class="block text-sm font-medium mb-1">Handicap</label>
-        <input 
-          id="handicap"
-          type="text"
-          formControlName="handicap"
-          class="w-full border border-gray-300 rounded p-2"
-          placeholder="e.g. 12.5"
-        />
-        <div *ngIf="profileForm.get('handicap')?.invalid && profileForm.get('handicap')?.touched" class="text-red-600 text-sm mt-1">
-          <span *ngIf="profileForm.get('handicap')?.errors?.['required']">Handicap is required.</span>
-          <span *ngIf="profileForm.get('handicap')?.errors?.['pattern']">Must be a decimal with 1 digit after the decimal (or whole number).</span>
-        </div>
-      </div>
-  
-      <div>
-        <label for="homeGolfClub" class="block text-sm font-medium mb-1">Home Golf Club (optional)</label>
-        <input 
-          id="homeGolfClub"
-          type="text"
-          formControlName="homeGolfClub"
-          class="w-full border border-gray-300 rounded p-2 text-gray-400 cursor-not-allowed"
-          placeholder="Select your home club"
-        />
-      </div>
-  
-      <button
-        type="submit"
-        [disabled]="isSubmitting || profileForm.invalid"
-        class="bg-blue-500 py-2 px-4 rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
-      >
-        {{ isSubmitting ? 'Saving...' : 'Save Profile' }}
-      </button>
-    </form>
+    </div>
+
+    <div *ngIf="!isLoading && !golfer">
+      <p>New User Form</p>
+    </div>
+
+    <div class="flex w-full justify-center" *ngIf="isLoading">
+      <div class="spinner mt-8  "></div>
+    </div>
+
   </div>
-  
+</div>

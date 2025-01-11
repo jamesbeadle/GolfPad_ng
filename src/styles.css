@@ -59,12 +59,14 @@ body {
   @apply bg-BrandForest px-4 py-2 rounded text-BrandYellow condensed
 }
 
+.brand-button-inactive{
+  @apply bg-BrandLightGray px-4 py-2 rounded text-BrandDarkGray condensed
+}
+
 .brand-input{
   @apply bg-white border-BrandForest px-4 py-2 rounded text-black
 }
 
-/* You can add global styles to this file, and also import other style files */
-/* src/app/components/nav-overlay/nav-overlay.component.css */
 .nav-overlay {
     @apply relative flex flex-col min-h-screen text-white bg-BrandDarkGray;
   }
@@ -87,4 +89,12 @@ body {
   
   .BrandTabInactive {
     @apply px-2 py-1 condensed text-BrandDarkGray
+  }
+
+  .page-container{
+    @apply p-4 text-black mt-[80px] text-black;
+  }
+
+  .page-header{
+    @apply text-5xl condensed;
   }
