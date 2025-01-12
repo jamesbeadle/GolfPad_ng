@@ -26,8 +26,6 @@ export class AuthService {
     // Subscribe to the 'user' observable from AngularFire, which emits the active User or null.
     user(this.auth).subscribe((usr) => {
       this.currentUserSubject.next(usr)
-      console.log("User store user:")
-      console.log(usr)
       this.authInitialized.next(true);
     });
   }

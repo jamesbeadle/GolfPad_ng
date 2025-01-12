@@ -31,7 +31,6 @@ export class AppComponent implements OnInit {
   constructor(private authService: AuthService, private golferService: GolfersService) {
     this.authService.currentUser$.subscribe(user => {
       this.isLoggedIn = !!user;
-      console.log(user)
       this.fetchGolfers();
     });
   }
@@ -45,11 +44,9 @@ export class AppComponent implements OnInit {
       return;
     }
     let golfers = await this.golferService.getGolfers();
-    console.log(golfers)
   }
 
   toggleNav(): void {
-    console.log("here")
     this.expanded = !this.expanded;
   }
 

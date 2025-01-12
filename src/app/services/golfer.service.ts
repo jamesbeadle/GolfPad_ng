@@ -46,8 +46,6 @@ export class GolfersService {
   }
 
   async updateGolfer(golferId: string, data: any): Promise<any> {
-    console.log(golferId)
-    console.log(data)
     return firstValueFrom(
       this.http.put<any>(`${environment.apiURL}/golfers/${golferId}`, data)
     );

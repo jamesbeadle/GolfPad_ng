@@ -47,27 +47,22 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log("Initialize profile component");
     this.initForm();
 
-    console.log("Subscribe to auth service");
-    this.authService.currentUser$.subscribe(async user => {
-      console.log("Auth service change user:", user);
+    this.authService.authInitialised$.subscribe(async initialised => {
+      if (!initialised) return;
 
-      this.authService.authInitialised$.subscribe(async initialised => {
-        console.log("authInitialised changed:", initialised);
-        if (!initialised) return;
+
+      this.authService.currentUser$.subscribe(async user => {
 
         if (!user) {
-          console.log("No user => navigate home");
           this.router.navigate(['/']);
           return;
         }
 
-        console.log("User found => load golfer by uid");
         await this.loadGolfer(user.uid);
-        console.log("Golfer loaded => isLoading = false");
         this.isLoading = false;
+  
       });
     });
   }

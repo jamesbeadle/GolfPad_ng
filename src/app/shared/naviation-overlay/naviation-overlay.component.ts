@@ -18,7 +18,6 @@ export class NaviationOverlayComponent {
   constructor(private authService: AuthService){
     this.authService.currentUser$.subscribe(user => {
       this.isLoggedIn = !!user;
-      console.log(user);
     });
   }
 
