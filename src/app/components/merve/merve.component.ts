@@ -37,7 +37,7 @@ export class MerveComponent {
         const langchainResponse: any = await firstValueFrom(
           this.http.post(
             `https://golfpad-langchain-m2az.onrender.com/chat`,
-            { question: userMessage, golfer_id: user.uid },
+            { query: userMessage, golfer_id: user.uid },
           )
         ) as LangChainReponse;
         this.isTyping = false;
