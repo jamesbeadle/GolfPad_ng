@@ -197,10 +197,11 @@ export class ProfileComponent implements OnInit {
         if (createdGolfer) {
           this.golfer = createdGolfer;
         } else {
-          const user = await this.authService.currentUser$.toPromise();
-          if (user) {
-            await this.loadGolfer(user.uid);
-          }
+          this.authService.currentUser$.subscribe(async user => {
+            if (user) {
+              await this.loadGolfer(user.uid);
+            }
+          });
         }
       }
     } catch (err) {

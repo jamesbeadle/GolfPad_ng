@@ -30,21 +30,25 @@ export class MerveComponent {
     const userMessage = this.userInput;
     this.userInput = '';
 
+    console.log("trying")
+
     try {
-      const user = await this.authService.currentUser$.toPromise();
-      if (user) {
-        this.isTyping = true;
-        const langchainResponse: any = await firstValueFrom(
-          this.http.post(
-            `https://golfpad-langchain-m2az.onrender.com/chat`,
-            { query: userMessage, golfer_id: user.uid },
-          )
-        ) as LangChainReponse;
-        this.isTyping = false;
-  
-        const aiResponse = langchainResponse;
-        this.messages.push({ text: aiResponse.answer.content, sender: 'ai', ai_response: aiResponse });
-      }
+      this.authService.currentUser$.subscribe(async user => {
+
+        if (user) {
+          this.isTyping = true;
+          const langchainResponse: any = await firstValueFrom(
+            this.http.post(
+              `https://golfpad-langchain-m2az.onrender.com/chat`,
+              { query: userMessage, golfer_id: user.uid },
+            )
+          ) as LangChainReponse;
+          this.isTyping = false;
+    
+          const aiResponse = langchainResponse;
+          this.messages.push({ text: aiResponse.answer.content, sender: 'ai', ai_response: aiResponse });
+        }
+      });
     } catch (error) {
       console.error('Error contacting LangChain model:', error);
       this.messages.push({ text: 'Error contacting AI service.', sender: 'ai', ai_response: null });
