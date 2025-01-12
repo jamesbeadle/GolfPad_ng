@@ -36,10 +36,21 @@ export class GolfersService {
   }
 
   async createProfile(profileData: any): Promise<any> {
-    this.http.post<any[]>(`${environment.apiURL}/golfers`,profileData);
+    return firstValueFrom(
+      this.http.post<any>(`${environment.apiURL}/golfers`, profileData)
+    );  
   }
 
   async getGolferById(uid: string) : Promise<any> {
     return firstValueFrom(this.http.get<boolean>(`${environment.apiURL}/Golfers/GetGolferByUID/${uid}`));
   }
+
+  async updateGolfer(golferId: string, data: any): Promise<any> {
+    console.log(golferId)
+    console.log(data)
+    return firstValueFrom(
+      this.http.put<any>(`${environment.apiURL}/golfers/${golferId}`, data)
+    );
+  }
+  
 }

@@ -16,13 +16,20 @@ import {
  */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  private authInitialized = new BehaviorSubject<boolean>(false);
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   /** Expose the current user as an observable for components to subscribe to. */
   currentUser$ = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
+  authInitialised$ = this.authInitialized.asObservable().pipe(distinctUntilChanged());
 
   constructor(private auth: Auth) {
     // Subscribe to the 'user' observable from AngularFire, which emits the active User or null.
-    user(this.auth).subscribe((usr) => this.currentUserSubject.next(usr));
+    user(this.auth).subscribe((usr) => {
+      this.currentUserSubject.next(usr)
+      console.log("User store user:")
+      console.log(usr)
+      this.authInitialized.next(true);
+    });
   }
 
   async signInWithGoogle(): Promise<void> {

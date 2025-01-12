@@ -1,115 +1,218 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, AsyncValidatorFn, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  AsyncValidatorFn,
+  ReactiveFormsModule,
+  ValidatorFn,
+  ValidationErrors
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { map, catchError, switchMap } from 'rxjs/operators';
 import { of, timer } from 'rxjs';
+
 import { GolfersService } from '../../services/golfer.service';
 import { AuthService } from '../../services/auth.service';
+import { SimpleModalComponent } from "../../shared/simple-modal/simple-modal.component";
+import { Router } from '@angular/router';
+import { BrandTextComponent } from "../../shared/brand-text/brand-text.component";
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    SimpleModalComponent,
+    BrandTextComponent
+  ],
   templateUrl: './profile.component.html'
 })
 export class ProfileComponent implements OnInit {
+  isLoading = true;
   profileForm!: FormGroup;
   isSubmitting = false;
   golfer: any = null;
-  isLoading = true;
+  originalUsername = '';
+  showEditProfileModal = false;
+  saving = false;
 
   constructor(
     private fb: FormBuilder,
     private golferService: GolfersService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    console.log("Initialize profile component");
     this.initForm();
-    this.loadGolfer();
+
+    console.log("Subscribe to auth service");
+    this.authService.currentUser$.subscribe(async user => {
+      console.log("Auth service change user:", user);
+
+      this.authService.authInitialised$.subscribe(async initialised => {
+        console.log("authInitialised changed:", initialised);
+        if (!initialised) return;
+
+        if (!user) {
+          console.log("No user => navigate home");
+          this.router.navigate(['/']);
+          return;
+        }
+
+        console.log("User found => load golfer by uid");
+        await this.loadGolfer(user.uid);
+        console.log("Golfer loaded => isLoading = false");
+        this.isLoading = false;
+      });
+    });
   }
 
   initForm() {
     this.profileForm = this.fb.group({
-      username: [
-        '', 
-        [
-          Validators.required,
-          Validators.minLength(6),
-          Validators.maxLength(20),
-          Validators.pattern('^[A-Za-z0-9]+$')
-        ],
-        [this.usernameUniqueValidator()]
-      ],
+      username: this.fb.control(
+        '',
+        {
+          validators: [
+            Validators.required,
+            Validators.minLength(6),
+            Validators.maxLength(20),
+            // Alphanumeric only
+            Validators.pattern('^[A-Za-z0-9]+$')
+          ],
+          asyncValidators: [this.usernameUniqueValidator(this.originalUsername)],
+          updateOn: 'blur'
+        }
+      ),
       firstName: [
-        '', 
+        '',
         [
           Validators.minLength(2),
           Validators.maxLength(20)
         ]
       ],
       lastName: [
-        '', 
+        '',
         [
           Validators.minLength(2),
           Validators.maxLength(20)
         ]
       ],
       handicap: [
-        '', 
+        '',
         [
-          Validators.pattern('^\\d+(\\.\\d{1})?$')
+          Validators.pattern('^-?\\d+(\\.\\d{1})?$'),
+          this.rangeValidator(-54, 54)
         ]
       ],
       homeGolfClub: ['']
     });
   }
 
-  async loadGolfer() {
+  rangeValidator(min: number, max: number): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) return null;
+      const val = parseFloat(control.value);
+      if (isNaN(val)) return { rangeError: true };
+      if (val < min || val > max) return { rangeError: true };
+      return null;
+    };
+  }
+
+  async loadGolfer(userId: string) {
     try {
-      this.authService.currentUser$.subscribe(user => {
-        if(user != null){
-          this.golferService.getGolferById(user.uid).then(value => {
-            this.golfer = value;
-            console.log("value")
-            console.log(value)
-            this.isLoading = false;
-          });
-        }
-      });
+      const value = await this.golferService.getGolferById(userId);
+      this.golfer = value;
+
+      if (this.golfer) {
+        this.originalUsername = this.golfer.username;
+        this.profileForm.get('username')?.setAsyncValidators(
+          this.usernameUniqueValidator(this.originalUsername)
+        );
+        this.profileForm.get('username')?.updateValueAndValidity();
+
+        // Patch the form with existing golfer data
+        this.profileForm.patchValue({
+          username: this.golfer.username,
+          handicap: this.golfer.handicap == null ? '' : this.golfer.handicap,
+          firstName: this.golfer.firstName || '',
+          lastName: this.golfer.lastName || '',
+          homeGolfClub: this.golfer.homeGolfClub || ''
+        });
+      }
     } catch (error) {
       console.error('Error loading golfer:', error);
     }
   }
 
-  usernameUniqueValidator(): AsyncValidatorFn {
-    
+  openEditModal() {
+    this.showEditProfileModal = true;
+  }
+
+  closeEditModal() {
+    this.showEditProfileModal = false;
+  }
+
+  usernameUniqueValidator(originalUsername: string): AsyncValidatorFn {
     return (control: AbstractControl) => {
-      if (!control.value) {
+      if (!control.value || control.value === originalUsername) {
         return of(null);
       }
-      console.log("control.value")
-      console.log(control.value)
+
       return timer(500).pipe(
         switchMap(() => this.golferService.checkUsernameAvailable(control.value)),
         map(isAvailable => (isAvailable ? null : { usernameTaken: true })),
-        catchError(() => of(null)) 
+        catchError(() => of(null))
       );
     };
   }
 
-  async onSubmit() {
+  async onSubmit(isEdit: boolean = false) {
+    this.saving = true; 
+    this.isSubmitting = true;
     if (this.profileForm.invalid) {
       this.profileForm.markAllAsTouched();
+      this.saving = false;
+      this.isSubmitting = false;
       return;
     }
+
     this.isSubmitting = true;
 
-    const formValue = this.profileForm.value;
+    const fv = this.profileForm.value;
+    const mappedValue: any = {
+      username: fv.username,
+      firstName: fv.firstName === '' ? null : fv.firstName,
+      lastName:  fv.lastName  === '' ? null : fv.lastName,
+      handicap:  fv.handicap  === '' ? null : Number(fv.handicap),
+      homeGolfClub: fv.homeGolfClub === '' ? null : fv.homeGolfClub
+    };
 
-    let profileCreateResult = await this.golferService.createProfile(formValue);
-    
-    console.log(profileCreateResult)
+    try {
+      if (isEdit && this.golfer) {
+        this.golfer = { ...this.golfer, ...mappedValue };
+        await this.golferService.updateGolfer(this.golfer.id, this.golfer);
+        this.closeEditModal();
+      } else {
+        const createdGolfer = await this.golferService.createProfile(mappedValue);
+        if (createdGolfer) {
+          this.golfer = createdGolfer;
+        } else {
+          const user = await this.authService.currentUser$.toPromise();
+          if (user) {
+            await this.loadGolfer(user.uid);
+          }
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
 
+    this.saving = false;
+    this.isSubmitting = false;
   }
 }

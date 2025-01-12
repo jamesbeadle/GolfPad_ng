@@ -1,6 +1,5 @@
 <div class="page-container">
   <div class="container mx-auto px-4 py-4 mb-32 md:mb-0">
-
     <header class="flex items-center justify-between mb-4">
       <h1 class="page-header">PROFILE</h1>
       <div class="flex bg-BrandLightGray">
@@ -9,23 +8,30 @@
       </div>
     </header>
 
+    <div class="flex w-full justify-center" *ngIf="isLoading">
+      <div class="spinner mt-8"></div>
+    </div>
+
     <div *ngIf="!isLoading && golfer" class="bg-BrandLightGray p-4 min-h-[500px]">
       <div class="flex flex-col md:flex-row items-stretch gap-4 h-full">
-
         <div class="w-full md:w-1/3">
           <img src="profile.jpg" alt="Profile" class="w-full h-auto rounded object-cover" />
         </div>
 
         <div class="w-full md:w-1/3 flex flex-col p-4">
           <div class="flex items-center justify-between mb-4">
-            <h2 class="font-bold brand-header">DETAILS</h2>
+            <h2 *ngIf="golfer.firstName == '' && golfer.lastName == ''" class="font-bold brand-header">DETAILS</h2>
+            <h2 *ngIf="golfer.firstName != '' || golfer.lastName != ''" class="font-bold brand-header uppercase">{{golfer.firstName}} {{golfer.lastName}} DETAILS</h2>
             <span class="flex flex-row items-center">
               <p class="text-xxs text-BrandDarkGray">UPDATE</p>
-
               <div class="flex items-center space-x-4 ml-2">
-                <svg class="w-4" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M16 2.66667C23.352 2.66667 29.3333 8.648 29.3333 16C29.3333 23.352 23.352 29.3333 16 29.3333C8.648 29.3333 2.66667 23.352 2.66667 16C2.66667 8.648 8.648 2.66667 16 2.66667ZM16 0C7.164 0 0 7.164 0 16C0 24.836 7.164 32 16 32C24.836 32 32 24.836 32 16C32 7.164 24.836 0 16 0ZM10.6747 17.2853L14.816 21.4253L9.33333 22.6667L10.6747 17.2853ZM24 12.2667L16.2133 20.1613L11.944 15.892L19.732 8L24 12.2667Z" fill="#313235"/>
-                </svg>
+                <button (click)="openEditModal()" class="flex items-center space-x-4 ml-2">
+                  <svg class="w-4" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M16 2.66667C23.352 2.66667 29.3333 8.648 29.3333 16C29.3333 23.352 23.352 29.3333 16 29.3333C8.648 29.3333 2.66667 23.352 2.66667 16C2.66667 8.648 8.648 2.66667 16 2.66667ZM16 0C7.164 0 0 7.164 0 16C0 24.836 7.164 32 16 32C24.836 32 32 24.836 32 16C32 7.164 24.836 0 16 0ZM10.6747 17.2853L14.816 21.4253L9.33333 22.6667L10.6747 17.2853ZM24 12.2667L16.2133 20.1613L11.944 15.892L19.732 8L24 12.2667Z"
+                      fill="#313235"/>
+                  </svg>
+                </button>
               </div>
             </span>
           </div>
@@ -35,17 +41,14 @@
               <span class="uppercase text-BrandDarkGray text-xs tracking-wide">Username</span>
               <h1 class="text-5xl brand-header uppercase">{{golfer.username}}</h1>
             </div>
-
             <div>
               <span class="uppercase text-BrandDarkGray text-xs tracking-wide">Handicap</span>
               <h1 class="text-2xl brand-header uppercase">{{golfer.handicap}}</h1>
             </div>
-
             <div>
               <span class="uppercase text-BrandDarkGray text-xs tracking-wide">Home Course</span>
               <h1 class="text-2xl brand-header uppercase">Not Set</h1>
             </div>
-
           </div>
         </div>
 
@@ -53,17 +56,257 @@
           <h2 class="font-bold mb-2">Shot Yardages</h2>
           <p>Coming soon.</p>
         </div>
-
       </div>
     </div>
 
-    <div *ngIf="!isLoading && !golfer">
-      <p>New User Form</p>
-    </div>
+    <div
+      *ngIf="!isLoading && !golfer"
+      class="p-6 bg-BrandLightGray min-h-[500px] rounded-md shadow-lg max-w-md mx-auto"
+    >
+      <h2 class="mb-6 text-2xl font-bold text-BrandForest text-center">
+        <span class="flex flex-row items-center justify-center">
+          Welcome to <app-brand-text class="mx-1" content="GOLFPAD"></app-brand-text>
+        </span>
+      </h2>
+      <div *ngIf="saving" class="flex flex-col items-center justify-center">
+        <div class="spinner mt-4"></div>
+        <p class="mt-2">Creating your profile...</p>
+      </div>
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" *ngIf="!saving">
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+          <input
+            type="text"
+            formControlName="username"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-BrandYellow focus:border-BrandYellow"
+          />
+          
+          <div
+            *ngIf="profileForm.get('username')?.touched && profileForm.get('username')?.hasError('required')"
+            class="text-red-500 text-sm"
+          >
+            Username is required.
+          </div>
+          <div
+            *ngIf="profileForm.get('username')?.touched && profileForm.get('username')?.hasError('minlength')"
+            class="text-red-500 text-sm"
+          >
+            Username must be at least 6 characters.
+          </div>
+          <div
+            *ngIf="profileForm.get('username')?.touched && profileForm.get('username')?.hasError('maxlength')"
+            class="text-red-500 text-sm"
+          >
+            Username cannot exceed 20 characters.
+          </div>
+          <div
+            *ngIf="profileForm.get('username')?.touched && profileForm.get('username')?.hasError('pattern')"
+            class="text-red-500 text-sm"
+          >
+            Only letters and digits are allowed.
+          </div>
+          <div
+            *ngIf="profileForm.get('username')?.touched && profileForm.get('username')?.hasError('usernameTaken')"
+            class="text-red-500 text-sm"
+          >
+            That username is already taken, please choose another.
+          </div>
+        </div>
 
-    <div class="flex w-full justify-center" *ngIf="isLoading">
-      <div class="spinner mt-8  "></div>
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Handicap</label>
+          <input
+            type="text"
+            formControlName="handicap"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-BrandYellow focus:border-BrandYellow"
+          />
+          <div
+            *ngIf="profileForm.get('handicap')?.touched && profileForm.get('handicap')?.hasError('pattern')"
+            class="text-red-500 text-sm"
+          >
+            Handicap must be numeric with up to 1 decimal place, e.g. -10, 10, 20.2, -54.0, 54.0.
+          </div>
+          <div
+            *ngIf="profileForm.get('handicap')?.touched && profileForm.get('handicap')?.hasError('rangeError')"
+            class="text-red-500 text-sm"
+          >
+            Handicap must be between -54.0 and 54.0.
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+          <input
+            type="text"
+            formControlName="firstName"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-BrandYellow focus:border-BrandYellow"
+          />
+          <div
+            *ngIf="profileForm.get('firstName')?.touched && profileForm.get('firstName')?.hasError('minlength')"
+            class="text-red-500 text-sm"
+          >
+            First name must be at least 2 characters.
+          </div>
+          <div
+            *ngIf="profileForm.get('firstName')?.touched && profileForm.get('firstName')?.hasError('maxlength')"
+            class="text-red-500 text-sm"
+          >
+            First name cannot exceed 20 characters.
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+          <input
+            type="text"
+            formControlName="lastName"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-BrandYellow focus:border-BrandYellow"
+          />
+          <div
+            *ngIf="profileForm.get('lastName')?.touched && profileForm.get('lastName')?.hasError('minlength')"
+            class="text-red-500 text-sm"
+          >
+            Last name must be at least 2 characters.
+          </div>
+          <div
+            *ngIf="profileForm.get('lastName')?.touched && profileForm.get('lastName')?.hasError('maxlength')"
+            class="text-red-500 text-sm"
+          >
+            Last name cannot exceed 20 characters.
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full py-2 px-4 shadow-sm hover:bg-BrandYellowDark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-BrandYellow"
+          [class.brand-button]="!profileForm.pending && profileForm.valid"
+          [class.brand-button-inactive]="profileForm.pending || profileForm.invalid"
+          [disabled]="profileForm.invalid || profileForm.pending || isSubmitting"
+        >
+          Create Profile
+        </button>
+      </form>
     </div>
 
   </div>
+
+  <app-simple-modal
+    [title]="'EDIT PROFILE'"
+    [showModal]="showEditProfileModal"
+    (onClose)="closeEditModal()"
+  >
+    <div class="flex flex-col items-center justify-center" *ngIf="saving">
+      <div class="spinner mt-4"></div>
+      <p class="mt-2 mb-4">Saving changes...</p>
+    </div>
+
+    <form class="p-4" *ngIf="!saving" [formGroup]="profileForm" (ngSubmit)="onSubmit(true)">
+
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+        <input
+          type="text"
+          formControlName="username"
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-BrandYellow focus:border-BrandYellow"
+        />
+
+        <div
+          *ngIf="profileForm.get('username')?.touched && profileForm.get('username')?.hasError('required')"
+          class="text-red-500 text-sm"
+        >
+          Username is required.
+        </div>
+        <div
+          *ngIf="profileForm.get('username')?.touched && profileForm.get('username')?.hasError('minlength')"
+          class="text-red-500 text-sm"
+        >
+          Username must be at least 6 characters.
+        </div>
+        <div
+          *ngIf="profileForm.get('username')?.touched && profileForm.get('username')?.hasError('maxlength')"
+          class="text-red-500 text-sm"
+        >
+          Username cannot exceed 20 characters.
+        </div>
+        <div
+          *ngIf="profileForm.get('username')?.touched && profileForm.get('username')?.hasError('pattern')"
+          class="text-red-500 text-sm"
+        >
+          Only letters and digits are allowed.
+        </div>
+        <div
+          *ngIf="profileForm.get('username')?.touched && profileForm.get('username')?.hasError('usernameTaken')"
+          class="text-red-500 text-sm"
+        >
+          That username is already taken, please choose another.
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Handicap</label>
+        <input
+          type="text"
+          formControlName="handicap"
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-BrandYellow focus:border-BrandYellow"
+        />
+        <div
+          *ngIf="profileForm.get('handicap')?.touched && profileForm.get('handicap')?.hasError('pattern')"
+          class="text-red-500 text-sm"
+        >
+          Handicap must be numeric with up to 1 decimal place, e.g. -10, 10, 20.2, -54.0, 54.0.
+        </div>
+        <div
+          *ngIf="profileForm.get('handicap')?.touched && profileForm.get('handicap')?.hasError('rangeError')"
+          class="text-red-500 text-sm"
+        >
+          Handicap must be between -54.0 and 54.0.
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+        <input
+          type="text"
+          formControlName="firstName"
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-BrandYellow focus:border-BrandYellow"
+        />
+        <div
+          *ngIf="profileForm.get('firstName')?.touched && profileForm.get('firstName')?.hasError('minlength')"
+          class="text-red-500 text-sm"
+        >
+          First name must be at least 2 characters.
+        </div>
+        <div
+          *ngIf="profileForm.get('firstName')?.touched && profileForm.get('firstName')?.hasError('maxlength')"
+          class="text-red-500 text-sm"
+        >
+          First name cannot exceed 20 characters.
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+        <input
+          type="text"
+          formControlName="lastName"
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-BrandYellow focus:border-BrandYellow"
+        />
+        <div
+          *ngIf="profileForm.get('lastName')?.touched && profileForm.get('lastName')?.hasError('minlength')"
+          class="text-red-500 text-sm"
+        >
+          Last name must be at least 2 characters.
+        </div>
+        <div
+          *ngIf="profileForm.get('lastName')?.touched && profileForm.get('lastName')?.hasError('maxlength')"
+          class="text-red-500 text-sm"
+        >
+          Last name cannot exceed 20 characters.
+        </div>
+      </div>
+
+      <button class="brand-button" type="submit" [disabled]="isSubmitting">Save Changes</button>
+      <button class="brand-button-inactive ml-2" type="button" (click)="closeEditModal()">Cancel</button>
+    </form>
+  </app-simple-modal>
 </div>
