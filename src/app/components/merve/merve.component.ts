@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-merve',
@@ -16,7 +17,7 @@ export class MerveComponent {
   messages: { text: string; sender: 'user' | 'ai', ai_response: LangChainReponse | null }[] = [];
   isTyping = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   toggleChat() {
     this.isOpen = !this.isOpen;
@@ -30,17 +31,20 @@ export class MerveComponent {
     this.userInput = '';
 
     try {
-      this.isTyping = true;
-      const langchainResponse: any = await firstValueFrom(
-        this.http.post(
-          'https://golfpad-langchain-m2az.onrender.com/chat',
-          { question: userMessage },
-        )
-      ) as LangChainReponse;
-      this.isTyping = false;
-
-      const aiResponse = langchainResponse;
-      this.messages.push({ text: aiResponse.answer.content, sender: 'ai', ai_response: aiResponse });
+      const user = await this.authService.currentUser$.toPromise();
+      if (user) {
+        this.isTyping = true;
+        const langchainResponse: any = await firstValueFrom(
+          this.http.post(
+            `https://golfpad-langchain-m2az.onrender.com/chat`,
+            { question: userMessage, golfer_id: user.uid },
+          )
+        ) as LangChainReponse;
+        this.isTyping = false;
+  
+        const aiResponse = langchainResponse;
+        this.messages.push({ text: aiResponse.answer.content, sender: 'ai', ai_response: aiResponse });
+      }
     } catch (error) {
       console.error('Error contacting LangChain model:', error);
       this.messages.push({ text: 'Error contacting AI service.', sender: 'ai', ai_response: null });
