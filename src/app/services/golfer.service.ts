@@ -50,5 +50,15 @@ export class GolfersService {
       this.http.put<any>(`${environment.apiURL}/golfers/${golferId}`, data)
     );
   }
-  
+
+  async uploadProfilePicture(golferId: string, file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append('profilePicture', file);
+
+    return firstValueFrom(
+      this.http.post<{url: string}>(
+        `${environment.apiURL}/golfers`, formData
+      )
+    ).then(response => response.url);
+  }
 }

@@ -17,8 +17,8 @@ import { GolfersService } from '../../services/golfer.service';
 import { AuthService } from '../../services/auth.service';
 import { SimpleModalComponent } from "../../shared/simple-modal/simple-modal.component";
 import { Router } from '@angular/router';
-import { BrandTextComponent } from "../../shared/brand-text/brand-text.component";
-
+import { AddImageComponent } from '../../shared/add-image/add-image.component';
+import { BrandTextComponent } from '../../shared/brand-text/brand-text.component';
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -26,6 +26,7 @@ import { BrandTextComponent } from "../../shared/brand-text/brand-text.component
     CommonModule,
     ReactiveFormsModule,
     SimpleModalComponent,
+    AddImageComponent,
     BrandTextComponent
   ],
   templateUrl: './profile.component.html'
@@ -37,7 +38,9 @@ export class ProfileComponent implements OnInit {
   golfer: any = null;
   originalUsername = '';
   showEditProfileModal = false;
+  showEditProfilePicModal = false;
   saving = false;
+  golferPicture: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -152,6 +155,14 @@ export class ProfileComponent implements OnInit {
     this.showEditProfileModal = false;
   }
 
+  openImageEditModal() {
+    this.showEditProfilePicModal = true;
+  }
+
+  closeImageEditModal() {
+    this.showEditProfilePicModal = false;
+  }
+
   usernameUniqueValidator(originalUsername: string): AsyncValidatorFn {
     return (control: AbstractControl) => {
       if (!control.value || control.value === originalUsername) {
@@ -210,5 +221,32 @@ export class ProfileComponent implements OnInit {
 
     this.saving = false;
     this.isSubmitting = false;
+  }
+
+  async onFileSelect(event: {file: File, preview: string}) {
+    try {
+      if (!this.golfer?.id) {
+        console.error('No golfer ID found');
+        return;
+      }
+
+      this.saving = true;
+      this.golferPicture = event.preview;
+      
+      const uploadedUrl = await this.golferService.uploadProfilePicture(this.golfer.id, event.file);
+      this.golferPicture = uploadedUrl;
+      
+      this.golfer = {
+        ...this.golfer,
+        profilePicture: this.golferPicture
+      };
+      await this.golferService.updateGolfer(this.golfer.id, this.golfer);
+    } catch (error) {
+      console.error('Error uploading profile picture:', error);
+      this.golferPicture = null;
+    } finally {
+      this.saving = false;
+      this.closeImageEditModal();
+    }
   }
 }

@@ -59,6 +59,10 @@ body {
   @apply bg-BrandForest px-4 py-2 rounded text-BrandYellow condensed
 }
 
+.brand-button-save{
+  @apply bg-BrandYellow px-4 py-2 rounded text-BrandForest condensed
+}
+
 .brand-button-inactive{
   @apply bg-BrandLightGray px-4 py-2 rounded text-BrandDarkGray condensed
 }
@@ -92,9 +96,52 @@ body {
   }
 
   .page-container{
-    @apply p-4 text-black mt-[80px] text-black;
+    @apply p-4 text-black mt-[80px];
   }
 
   .page-header{
     @apply text-5xl condensed;
+  }
+
+  .drop-zone:hover {
+    @apply border-BrandForest bg-BrandForest/5;
+  }
+
+  .drop-zone.dragging {
+    @apply border-BrandForest bg-BrandForest/10;
+    transform: scale(1.02);
+  }
+
+  .preview-image {
+    @apply max-w-full max-h-[200px] object-contain;
+    transition: all 0.3s ease;
+  }
+
+  .modal-footer {
+    @apply flex justify-end gap-3;
+  }
+
+  .modal-overlay {
+    @apply opacity-0;
+    visibility: hidden;
+  }
+
+  .modal-overlay.visible {
+    @apply transition-all duration-300 ease-in-out opacity-100;
+    visibility: visible;
+  }
+
+  .modal-content {
+    @apply translate-y-5 opacity-0;
+  }
+
+  .modal-overlay.visible .modal-content {
+    @apply transition-all duration-300 ease-in-out translate-y-0 opacity-100;
+  }
+  .drop-zone {
+    @apply flex flex-col items-center justify-center p-10 mx-6 my-6 space-y-4 text-center border-2 border-gray-300 border-dashed rounded cursor-pointer;
+    transition: all 0.3s ease;
+  }
+  button:disabled {
+    @apply opacity-50 cursor-not-allowed;
   }
