@@ -14,7 +14,6 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private auth: Auth) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Wrap the currentUser property in a Promise so that from(...) can handle it.
     const userPromise = Promise.resolve(this.auth.currentUser);
 
     return from(userPromise).pipe(
@@ -25,6 +24,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
         return from(user.getIdToken(true)).pipe(
           switchMap(token => {
+            console.log(token);
             const authReq = req.clone({
               setHeaders: { Authorization: `Bearer ${token}` }
             });
