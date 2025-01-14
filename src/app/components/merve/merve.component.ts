@@ -44,7 +44,8 @@ export class MerveComponent {
             )
           ) as LangChainReponse;
           this.isTyping = false;
-    
+          console.log("langchainResponse")
+          console.log(langchainResponse)
           const aiResponse = JSON.parse(langchainResponse);
           this.messages.push({ text: aiResponse.answer.content, sender: 'ai', ai_response: aiResponse });
         }
