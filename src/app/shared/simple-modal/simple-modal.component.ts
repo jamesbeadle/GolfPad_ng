@@ -11,8 +11,22 @@ export class SimpleModalComponent {
   @Input() title = '';
   @Input() showModal = false;
   @Output() onClose = new EventEmitter<void>();
+  isVisible = false;
+
+  ngOnChanges() {
+    if (this.showModal) {
+      setTimeout(() => {
+        this.isVisible = true;
+      }, 0);
+    } else {
+      this.isVisible = false;
+    }
+  }
 
   closeModal(): void {
-    this.onClose.emit();
+    this.isVisible = false;
+    setTimeout(() => {
+      this.onClose.emit();
+    }, 300);
   }
 }
