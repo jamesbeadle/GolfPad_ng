@@ -44,17 +44,31 @@ export class MerveComponent {
             )
           ) as LangChainReponse;
           this.isTyping = false;
-          console.log("langchainResponse")
-          console.log(langchainResponse)
-          const aiResponse = JSON.parse(langchainResponse);
-          this.messages.push({ text: aiResponse.answer.content, sender: 'ai', ai_response: aiResponse });
+          
+          var response = JSON.parse(langchainResponse);
+
+          if(this.hasValue(response, "action")){
+            this.messages.push({ text: response.content, sender: 'ai', ai_response: response });
+            return;
+          } 
+
+          this.messages.push({ text: response.content, sender: 'ai', ai_response: response });
         }
       });
     } catch (error) {
       console.error('Error contacting LangChain model:', error);
       this.messages.push({ text: 'Error contacting AI service.', sender: 'ai', ai_response: null });
     }
+
+    
+  
   }
+
+  hasValue<T extends Record<string, unknown>>(obj: T, key: keyof T): boolean {
+    const value = obj[key];
+    return value !== null && value !== undefined && value !== '';
+  }
+  
 }
 
 export interface LangChainReponse {
