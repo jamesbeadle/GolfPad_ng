@@ -45,7 +45,7 @@ export class MerveComponent {
           ) as LangChainReponse;
           this.isTyping = false;
     
-          const aiResponse = langchainResponse;
+          const aiResponse = JSON.parse(langchainResponse);
           this.messages.push({ text: aiResponse.answer.content, sender: 'ai', ai_response: aiResponse });
         }
       });
