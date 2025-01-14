@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
+import { AIResponse, DefaultResponse, ResponseQuery, RulesRepsonse, ShotInputResponse, ShotQueryResponse } from '../../interfaces/ai-responses';
 
 @Component({
   selector: 'app-merve',
@@ -14,7 +15,7 @@ import { AuthService } from '../../services/auth.service';
 export class MerveComponent {
   isOpen = false;
   userInput = '';
-  messages: { text: string; sender: 'user' | 'ai', ai_response: LangChainReponse | null }[] = [];
+  messages: { text: string; sender: 'user' | 'ai', ai_response: AIResponse }[] = [];
   isTyping = false;
 
   constructor(private http: HttpClient, private authService: AuthService) {}
@@ -26,11 +27,9 @@ export class MerveComponent {
   async sendMessage() {
     if (!this.userInput.trim()) return;
 
-    this.messages.push({ text: this.userInput, sender: 'user', ai_response: null });
+    this.messages.push({ text: this.userInput, sender: 'user', ai_response: { content: this.userInput, response_type: -1 } });
     const userMessage = this.userInput;
     this.userInput = '';
-
-    console.log("trying")
 
     try {
       this.authService.currentUser$.subscribe(async user => {
@@ -42,22 +41,17 @@ export class MerveComponent {
               `https://golfpad-langchain-m2az.onrender.com/chat`,
               { query: userMessage, golfer_id: user.uid },
             )
-          ) as LangChainReponse;
-          this.isTyping = false;
-          
+          ) as any;
           var response = JSON.parse(langchainResponse);
-
-          if(this.hasValue(response, "action")){
-            this.messages.push({ text: response.content, sender: 'ai', ai_response: response });
-            return;
-          } 
-
           this.messages.push({ text: response.content, sender: 'ai', ai_response: response });
+          console.log(this.messages)
+
+          this.isTyping = false;
         }
       });
     } catch (error) {
       console.error('Error contacting LangChain model:', error);
-      this.messages.push({ text: 'Error contacting AI service.', sender: 'ai', ai_response: null });
+      this.messages.push({ text: 'Error contacting AI service.', sender: 'ai', ai_response: {content: 'Error contacting AI service', response_type: 0} });
     }
 
     
@@ -68,14 +62,10 @@ export class MerveComponent {
     const value = obj[key];
     return value !== null && value !== undefined && value !== '';
   }
-  
-}
 
-export interface LangChainReponse {
-  answer: {
-    headline: string;
-    content: string;
-    actions: string[];
-    rule_number: string;
-  };
+  isRulesResponse(response: AIResponse): response is RulesRepsonse {
+    return 'rule_number' in response;
+  }
+  
+  
 }
