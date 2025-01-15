@@ -64,7 +64,11 @@ export class MerveComponent {
   }
 
   isRulesResponse(response: AIResponse): response is RulesRepsonse {
-    return 'rule_number' in response;
+    return response.response_type == 2;
+  }
+
+  isShotResponse(response: AIResponse): response is RulesRepsonse {
+    return response.response_type == 3;
   }
   
   

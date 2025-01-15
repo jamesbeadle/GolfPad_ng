@@ -1,36 +1,36 @@
 <div class="w-full h-full p-2 px-4 pt-20 text-black">
   <h2 class="mt-3 mb-4 text-3xl font-black text-black md:text-5xl condensed">
       GOLFPAD WHITEPAPER
-    </h2>
+  </h2>
   
-    <div class="flex flex-col w-full min-h-screen md:flex-row">
-      <div class="relative w-full md:sticky md:w-1/4 md:top-20">
-        <img
-          src="game-images/games.jpg"
-          alt="hero"
-          class="w-full h-48 rounded-lg md:min-h-[800px] md:max-h-screen object-cover object-[50%_var(--crop-position-y)]"
-          style="--crop-position-y: top;"
-        />
+  <div class="flex flex-col w-full min-h-screen md:flex-row">
+    <div class="relative w-full md:sticky md:w-1/4 md:top-20">
+      <img
+        src="game-images/games.jpg"
+        alt="hero"
+        class="w-full h-48 rounded-lg md:min-h-[800px] md:max-h-screen object-cover object-[50%_var(--crop-position-y)]"
+        style="--crop-position-y: top;"
+      />
+    </div>
+
+    <div class="w-full px-2 mt-4 mb-32 md:w-3/4 md:mt-0">
+      <div class="flex mb-4 space-x-2">
+        <button [ngClass]="{ 'BrandTab': activeTab === 'vision', 'BrandTabInactive': activeTab !== 'vision' }" (click)="activeTab = 'vision'">VISION</button>
+        <button [ngClass]="{ 'BrandTab': activeTab === 'merve', 'BrandTabInactive': activeTab !== 'merve' }" (click)="activeTab = 'merve'">MERVE</button>
+        <button [ngClass]="{ 'BrandTab': activeTab === 'new-games', 'BrandTabInactive': activeTab !== 'new-games' }" (click)="activeTab = 'new-games'">NEW GAMES</button>
+        <button [ngClass]="{ 'BrandTab': activeTab === 'side-games', 'BrandTabInactive': activeTab !== 'side-games' }" (click)="activeTab = 'side-games'">SIDE GAMES</button>
+        
+        <button [ngClass]="{ 'BrandTab': activeTab === 'marketing', 'BrandTabInactive': activeTab !== 'marketing' }" (click)="activeTab = 'marketing'">MARKETING</button>
+        <button [ngClass]="{ 'BrandTab': activeTab === 'roadmap', 'BrandTabInactive': activeTab !== 'roadmap' }" (click)="activeTab = 'roadmap'">ROADMAP</button>
       </div>
-  
-      <div class="w-full px-2 mt-4 mb-32 md:w-3/4 md:mt-0">
-        <div class="flex mb-4 space-x-2">
-          <button [ngClass]="{ 'BrandTab': activeTab === 'vision', 'BrandTabInactive': activeTab !== 'vision' }" (click)="activeTab = 'vision'">VISION</button>
-          <button [ngClass]="{ 'BrandTab': activeTab === 'merve', 'BrandTabInactive': activeTab !== 'merve' }" (click)="activeTab = 'merve'">MERVE</button>
-          <button [ngClass]="{ 'BrandTab': activeTab === 'new-games', 'BrandTabInactive': activeTab !== 'new-games' }" (click)="activeTab = 'new-games'">NEW GAMES</button>
-          <button [ngClass]="{ 'BrandTab': activeTab === 'side-games', 'BrandTabInactive': activeTab !== 'side-games' }" (click)="activeTab = 'side-games'">SIDE GAMES</button>
-          
-          <button [ngClass]="{ 'BrandTab': activeTab === 'marketing', 'BrandTabInactive': activeTab !== 'marketing' }" (click)="activeTab = 'marketing'">MARKETING</button>
-          <button [ngClass]="{ 'BrandTab': activeTab === 'roadmap', 'BrandTabInactive': activeTab !== 'roadmap' }" (click)="activeTab = 'roadmap'">ROADMAP</button>
-        </div>
-  
-        <app-vision *ngIf="activeTab === 'vision'"></app-vision>
-        <app-merve-info *ngIf="activeTab === 'merve'"></app-merve-info>
-        <app-new-games *ngIf="activeTab === 'new-games'"></app-new-games>
-        <app-side-games *ngIf="activeTab === 'side-games'"></app-side-games>
-        <app-marketing *ngIf="activeTab === 'marketing'"></app-marketing>
-        <app-roadmap *ngIf="activeTab === 'roadmap'"></app-roadmap>
-      </div>
+
+      <app-vision *ngIf="activeTab === 'vision'"></app-vision>
+      <app-merve-info *ngIf="activeTab === 'merve'"></app-merve-info>
+      <app-new-games *ngIf="activeTab === 'new-games'"></app-new-games>
+      <app-side-games *ngIf="activeTab === 'side-games'"></app-side-games>
+      <app-marketing *ngIf="activeTab === 'marketing'"></app-marketing>
+      <app-roadmap *ngIf="activeTab === 'roadmap'"></app-roadmap>
     </div>
   </div>
+</div>
   
