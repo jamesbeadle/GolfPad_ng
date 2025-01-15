@@ -64,7 +64,7 @@
             {{ msg.text }}
           </div>
 
-          <div *ngIf="msg.ai_response && msg.ai_response.actions.length > 0">
+          <div *ngIf="msg.ai_response && msg.ai_response.actions && msg.ai_response.actions.length > 0">
             <p class="px-2 mt-1 text-base condensed">What Now?</p>
             <ul class="pl-5 list-disc">
               <li  *ngFor="let action of msg.ai_response.actions"
