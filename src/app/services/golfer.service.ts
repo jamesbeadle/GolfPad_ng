@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom, Observable } from 'rxjs';
 import { environment } from '../environments/environment';
+import { GetAllGolfersDTO } from '../requests/golfer/get-all-golfers';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,21 @@ export class GolfersService {
   ) {}
 
   async getGolfers(): Promise<any[]> {
-    return firstValueFrom(this.http.get<any[]>(`${environment.apiURL}/golfers`));
+    let dto: GetAllGolfersDTO = {
+      searchTerm: '', 
+      page: 1, 
+      homeCourseFilterId: 0
+    };
+  
+    return firstValueFrom(this.http.get<any[]>(`${environment.apiURL}/golfers`, {
+      params: {
+        searchTerm: dto.searchTerm,
+        page: dto.page.toString(),
+        homeCourseFilterId: dto.homeCourseFilterId.toString()
+      }
+    }));
   }
-
+  
   /*
 
 
