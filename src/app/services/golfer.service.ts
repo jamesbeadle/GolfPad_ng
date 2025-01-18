@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom, Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 import { GetAllGolfersDTO } from '../requests/golfer/get-all-golfers';
+import { UpdateGolferDTO } from '../commands/golfer/update-golfer';
+import { CreateGolferDTO } from '../commands/golfer/create-golfer-';
 
 @Injectable({
   providedIn: 'root'
@@ -21,11 +23,7 @@ export class GolfersService {
     };
   
     return firstValueFrom(this.http.get<any[]>(`${environment.apiURL}/golfers`, {
-      params: {
-        searchTerm: dto.searchTerm,
-        page: dto.page.toString(),
-        homeCourseFilterId: dto.homeCourseFilterId.toString()
-      }
+      params: dto
     }));
   }
   
@@ -48,30 +46,36 @@ export class GolfersService {
     return this.http.get<boolean>(`${environment.apiURL}/Golfers/CheckUsernameAvailable/${username}`);
   }
 
-  async createProfile(profileData: any): Promise<any> {
-    return firstValueFrom(
-      this.http.post<any>(`${environment.apiURL}/golfers`, profileData)
-    );  
+  async createGolfer(golferId: string, dto: CreateGolferDTO): Promise<any> {
+    try {
+      return await firstValueFrom(
+        this.http.post<any>(`${environment.apiURL}/golfers`, dto)
+      );
+    } catch (error: any) {
+      if (error.status === 400 || error.status === 404) {
+        return null;
+      }
+      throw error;
+    }
   }
-
-  async getGolferById(uid: string) : Promise<any> {
-    return firstValueFrom(this.http.get<boolean>(`${environment.apiURL}/Golfers/GetGolferByUID/${uid}`));
+  async getGolferById(uid: string): Promise<any> {
+    try {
+      return await firstValueFrom(
+        this.http.get<any>(`${environment.apiURL}/Golfers/GetGolferByUID/${uid}`)
+      );
+    } catch (error: any) {
+      if (error.status === 400 || error.status === 404) {
+        return null;
+      }
+      throw error;
+    }
   }
-
-  async updateGolfer(golferId: string, data: any): Promise<any> {
+  
+  async updateGolfer(golferId: string, data: UpdateGolferDTO): Promise<any> {
+    console.log(`${environment.apiURL}/golfers/${golferId}`)
+    console.log(data)
     return firstValueFrom(
       this.http.put<any>(`${environment.apiURL}/golfers/${golferId}`, data)
     );
-  }
-
-  async uploadProfilePicture(golferId: string, file: File): Promise<string> {
-    const formData = new FormData();
-    formData.append('profilePicture', file);
-
-    return firstValueFrom(
-      this.http.post<{url: string}>(
-        `${environment.apiURL}/golfers`, formData
-      )
-    ).then(response => response.url);
   }
 }

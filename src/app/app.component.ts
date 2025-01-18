@@ -31,19 +31,9 @@ export class AppComponent implements OnInit {
   constructor(private authService: AuthService, private golferService: GolfersService) {
     this.authService.currentUser$.subscribe(user => {
       this.isLoggedIn = !!user;
-      this.fetchGolfers();
     });
   }
   ngOnInit(){
-  }
-
-
-  async fetchGolfers(): Promise<void> {
-    if (!this.isLoggedIn) {
-      console.warn('User not logged in, cannot fetch golfers');
-      return;
-    }
-    let golfers = await this.golferService.getGolfers();
   }
 
   toggleNav(): void {

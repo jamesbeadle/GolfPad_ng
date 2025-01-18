@@ -19,6 +19,9 @@ import { SimpleModalComponent } from "../../shared/simple-modal/simple-modal.com
 import { Router } from '@angular/router';
 import { AddImageComponent } from '../../shared/add-image/add-image.component';
 import { BrandTextComponent } from '../../shared/brand-text/brand-text.component';
+import { GolferDTO } from '../../responses/golfer/golfer';
+import { UpdateGolferDTO } from '../../commands/golfer/update-golfer';
+import { CreateGolferDTO } from '../../commands/golfer/create-golfer-';
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -35,7 +38,7 @@ export class ProfileComponent implements OnInit {
   isLoading = true;
   profileForm!: FormGroup;
   isSubmitting = false;
-  golfer: any = null;
+  golfer: GolferDTO | null = null;
   originalUsername = '';
   showEditProfileModal = false;
   showEditProfilePicModal = false;
@@ -79,7 +82,6 @@ export class ProfileComponent implements OnInit {
             Validators.required,
             Validators.minLength(6),
             Validators.maxLength(20),
-            // Alphanumeric only
             Validators.pattern('^[A-Za-z0-9]+$')
           ],
           asyncValidators: [this.usernameUniqueValidator(this.originalUsername)],
@@ -123,8 +125,10 @@ export class ProfileComponent implements OnInit {
 
   async loadGolfer(userId: string) {
     try {
-      const value = await this.golferService.getGolferById(userId);
-      this.golfer = value;
+      const golferResult = await this.golferService.getGolferById(userId);
+      if(golferResult == null) {return}
+      console.log(golferResult)
+      this.golfer = golferResult;
 
       if (this.golfer) {
         this.originalUsername = this.golfer.username;
@@ -139,7 +143,7 @@ export class ProfileComponent implements OnInit {
           handicap: this.golfer.handicap == null ? '' : this.golfer.handicap,
           firstName: this.golfer.firstName || '',
           lastName: this.golfer.lastName || '',
-          homeGolfClub: this.golfer.homeGolfClub || ''
+          homeGolfClub: this.golfer.homeGolfCourseId || ''
         });
       }
     } catch (error) {
@@ -190,21 +194,34 @@ export class ProfileComponent implements OnInit {
     this.isSubmitting = true;
 
     const fv = this.profileForm.value;
-    const mappedValue: any = {
-      username: fv.username,
-      firstName: fv.firstName === '' ? null : fv.firstName,
-      lastName:  fv.lastName  === '' ? null : fv.lastName,
-      handicap:  fv.handicap  === '' ? null : Number(fv.handicap),
-      homeGolfClub: fv.homeGolfClub === '' ? null : fv.homeGolfClub
-    };
+
+    console.log(fv);
+    
+    let dto: UpdateGolferDTO = {
+      username: fv.username == '' || fv.username == this.golfer?.username ? null : fv.username,
+      firstName: fv.firstName == '' ? null : fv.firstName,
+      lastName:  fv.lastName == '' ? null : fv.lastName,
+      handicap:  fv.handicap == '' ? null : Number(fv.handicap),
+      homeCourseId: fv.homeCourseId == 0 ? null : fv.homeCourseId,
+      profilePicture: null
+    }
 
     try {
       if (isEdit && this.golfer) {
-        this.golfer = { ...this.golfer, ...mappedValue };
-        await this.golferService.updateGolfer(this.golfer.id, this.golfer);
-        this.closeEditModal();
+        this.authService.currentUser$.subscribe(async user => {
+          await this.golferService.updateGolfer(user!.uid!, dto);
+          this.closeEditModal();
+        });
       } else {
-        const createdGolfer = await this.golferService.createProfile(mappedValue);
+        console.log(fv)
+        let dto: CreateGolferDTO = {
+          username: fv.username == '' || fv.username == this.golfer?.username ? null : fv.username,
+          firstName: fv.firstName == '' ? null : fv.firstName,
+          lastName:  fv.lastName == '' ? null : fv.lastName,
+          handicap:  fv.handicap == '' ? null : Number(fv.handicap)
+        };
+        this.authService.currentUser$.subscribe(async user => {
+          const createdGolfer = await this.golferService.createGolfer(user?.uid!, dto);
         if (createdGolfer) {
           this.golfer = createdGolfer;
         } else {
@@ -214,6 +231,8 @@ export class ProfileComponent implements OnInit {
             }
           });
         }
+        });
+        
       }
     } catch (err) {
       console.error(err);
@@ -225,22 +244,29 @@ export class ProfileComponent implements OnInit {
 
   async onFileSelect(event: {file: File, preview: string}) {
     try {
-      if (!this.golfer?.id) {
-        console.error('No golfer ID found');
+      if (!this.golfer) {
+        console.error('No golfer found');
         return;
       }
 
       this.saving = true;
       this.golferPicture = event.preview;
+      this.authService.currentUser$.subscribe(async user => {
+        if (user) {
+          let dto: UpdateGolferDTO = {
+            username: null,
+            firstName: null,
+            lastName:  null,
+            handicap:  null,
+            homeCourseId: null,
+            profilePicture: event.file
+          }
+          await this.golferService.updateGolfer(user.uid, dto);
+        }
+      });
+
+
       
-      const uploadedUrl = await this.golferService.uploadProfilePicture(this.golfer.id, event.file);
-      this.golferPicture = uploadedUrl;
-      
-      this.golfer = {
-        ...this.golfer,
-        profilePicture: this.golferPicture
-      };
-      await this.golferService.updateGolfer(this.golfer.id, this.golfer);
     } catch (error) {
       console.error('Error uploading profile picture:', error);
       this.golferPicture = null;

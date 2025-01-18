@@ -42,7 +42,9 @@ export class MerveComponent {
               { query: userMessage, golfer_id: user.uid },
             )
           ) as any;
+          console.log(langchainResponse)
           var response = JSON.parse(langchainResponse);
+          console.log(response)
           this.messages.push({ text: response.content, sender: 'ai', ai_response: response });
           console.log(this.messages)
 
